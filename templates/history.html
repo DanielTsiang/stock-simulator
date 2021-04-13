@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+    <div class="table-responsive">
+        <table class="table table-hover caption-top" style="width:100%" id="history">
+            <caption>Transaction History</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Shares Traded</th>
+                    <th scope="col">Traded Price</th>
+                    <th scope="col">Transaction Timestamp (UTC)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.symbol }}</td>
+                        <td>{{ transaction.shares }}</td>
+                        <td>{{ transaction.price | usd }}</td>
+                        <td>{{ transaction.transacted | datetimeformat }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- script for sorting table -->
+    <script>
+        $(document).ready( function() {
+            // Configure date sorting
+            $.fn.dataTable.moment("DD-MM-YYYY HH:mm:ss");
+
+            // Load table
+            $("#history").DataTable({
+                scrollX: true,
+                scrollY: "35rem",
+                scrollCollapse: true,
+                order: [[ 3, "desc" ]]
+            });
+        });
+    </script>
+{% endblock %}

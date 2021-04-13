@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Symbols
+{% endblock %}
+
+{% block main %}
+    <div class="table-responsive">
+        <table class="table table-hover" style="width:100%" id="symbols">
+            <caption>Symbols supported by IEX</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!--- Import custom script for sorting table -->
+    <script src="/static/symbols.js"></script>
+
+{% endblock %}
