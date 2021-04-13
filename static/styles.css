@@ -1,0 +1,163 @@
+nav .navbar-brand {
+    /* size for brand */
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue {
+    color: #537fbe;
+}
+
+nav .navbar-brand .red {
+    color: #ea433b;
+}
+
+nav .navbar-brand .yellow {
+    color: #f5b82e;
+}
+
+nav .navbar-brand .green {
+    color: #2e944b;
+}
+
+main .form-control {
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main {
+    /* Scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* Center contents */
+    text-align: center;
+}
+
+main img {
+    /* Constrain images on small screens */
+    max-width: 100%;
+}
+
+.bold {
+    /* boldface font */
+    font-weight: bold;
+}
+
+/* Change background color of table stripes */
+tbody tr:nth-of-type(odd) {
+    background-color: rgb(179, 208, 255, 0.3)
+}
+
+.p-main {
+    margin-top: 2rem;
+}
+
+#quoteModal .modal-body {
+    /* Minimum height for quote modal body */
+    min-height: 15rem;
+}
+
+caption {
+    /* Table captions appear on top */
+    caption-side: top;
+}
+
+.select2-container {
+    /* Fix select2 elements align center horizontally */
+	display: inline-block;
+}
+
+/* Loading spinner for input forms */
+.loading {
+    background: url(https://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif) no-repeat right center !important;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem) !important;
+    border-color: #ced4da !important;
+}
+
+/* Focus background with loading spinner for input forms */
+.loading:focus {
+    border-color: #80bdff !important;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%) !important;
+}
+
+/* Keep same input width with Bootstrap validation symbols*/
+input:not(.is-invalid),
+input:not(.is-valid) {
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+/* Selects all <span> elements with class="is-invalid" */
+span.is-invalid {
+    font-size: small;
+    color: red;
+    display:block;
+}
+
+/* Selects all <span> elements with class="is-valid" */
+span.is-valid {
+    font-size: small;
+    color: green;
+    display:block;
+}
+
+/*==================================================
+                  Sticky Footer
+====================================================*/
+
+html, body {
+  height: 100%;
+}
+
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -2rem;
+}
+
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+.site-footer, .page-wrap:after {
+  height: 2rem;
+}
+
+/*==================================================
+                  Loading Spinner (Page)
+====================================================*/
+
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  width: 100%;
+  height:100%;
+  display: none;
+  background: rgba(0,0,0,0.6);
+}
+
+.div-spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.span-spinner {
+  width: 5rem;
+  height: 5rem;
+  border: 0.5rem #ddd solid;
+  border-top: 0.5rem #2e93e6 solid;
+  border-radius: 50%;
+  animation: spinner-animate 0.8s infinite linear;
+}
+
+@keyframes spinner-animate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
