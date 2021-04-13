@@ -24,7 +24,7 @@ A web app that simulates managing portfolios of stocks, using real stocks’ pri
 * User inputs are validated before form submission via jQuery and feedback is shown to user, e.g. error message if password does not meet strong complexity requirements.
 
 ### Getting Started
-1. Visit the web application [here](https://daniel-tsiang-tic-tac-toe.netlify.app/).
+1. Visit the web application [here](https://stock-simulator-dt.herokuapp.com/).
 2. Register for an account!
 
 ### Contribution Guidelines
