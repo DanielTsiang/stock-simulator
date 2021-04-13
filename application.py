@@ -37,8 +37,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Configure CS50 Library to use SQLite database
-db = SQL(os.getenv("DATABASE_URL"), connect_args={"check_same_thread": False})
+# Configure CS50 Library to use PostgreSQL database
+db = SQL(os.getenv("DATABASE_URL"))
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
