@@ -65,6 +65,7 @@ def index_json():
 
     # Select information from shares table for logged in user
     SHARES = db.execute("SELECT * FROM shares WHERE user_id = ?", user_id)
+    print(f"SHARES from index_json: {SHARES}")
 
     # List comprehension to convert list of dicts into list of symbols
     symbols_owned = [share["symbol"] for share in SHARES]
@@ -75,7 +76,7 @@ def index_json():
     for share in SHARES:
         price = float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
         new_shares_total = share["shares_count"] * float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
-        db.execute("UPDATE shares SET price = ? AND total = ? WHERE user_id = ? AND symbol = ?",
+        db.execute("UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?",
                   price, new_shares_total, user_id, share["symbol"])
         share["price"] = price
         share["total"] = new_shares_total
