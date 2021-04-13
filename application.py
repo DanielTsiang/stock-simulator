@@ -32,7 +32,7 @@ app.jinja_env.filters["datetimeformat"] = datetimeformat
 
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
+# app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -65,7 +65,6 @@ def index_json():
 
     # Select information from shares table for logged in user
     SHARES = db.execute("SELECT * FROM shares WHERE user_id = ?", user_id)
-    print(f"SHARES from index_json: {SHARES}")
 
     # List comprehension to convert list of dicts into list of symbols
     symbols_owned = [share["symbol"] for share in SHARES]
