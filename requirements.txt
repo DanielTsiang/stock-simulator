@@ -1,9 +1,6 @@
-cs50==6.0.4
-Flask==1.1.2
-Flask-Session==0.3.2
-Jinja2==2.11.3
-requests==2.25.1
-urllib3==1.26.4
-Werkzeug==1.0.1
+cs50
+Flask
+Flask-Session
+requests
 gunicorn
 psycopg2
