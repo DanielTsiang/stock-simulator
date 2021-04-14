@@ -230,6 +230,12 @@ $(function() {
                 remote: {
                     url: "/buyCheck",
                     type: "POST",
+                    beforeSend: function() {
+                        $("#username").addClass("loading");
+                    },
+                    complete: function() {
+                        $("#username").removeClass("loading");
+                    },
                     data: {
                         // Send additional data along with the default data
                         symbol_buy: function() {
@@ -310,6 +316,12 @@ $(function() {
                 remote: {
                     url: "/sellCheck",
                     type: "POST",
+                    beforeSend: function() {
+                        $("#username").addClass("loading");
+                    },
+                    complete: function() {
+                        $("#username").removeClass("loading");
+                    },
                     data: {
                         // Send additional data along with the default data
                         symbol_sell: function() {
