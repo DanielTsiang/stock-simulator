@@ -103,13 +103,23 @@ span.is-valid {
     display:block;
 }
 
+/* Selects all col-sm-12 class inside dataTables_wrapper class */
 .dataTables_wrapper .col-sm-12 {
+    /* center search input above DataTables */
     padding-left: 0;
     margin-top: 0.5rem;
 }
 
 caption {
+    /* remove top padding above table captions */
     padding-top: 0;
+}
+
+/* Selects all form-control-sm class inside dataTables_filter class */
+.dataTables_filter .form-control-sm {
+    /* decrease width of search input above DataTables */
+    width: 10rem !important;
+    margin-right: 0.5rem;
 }
 
 
