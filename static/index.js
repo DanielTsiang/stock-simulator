@@ -14,7 +14,7 @@ $(function() {
         ajax: {
         	url: "/select_json",
         	dataType: "json",
-        	type: "POST",
+        	type: "GET",
         	delay: 250,
             data: function(params) {
                 return {
@@ -42,7 +42,7 @@ $(function() {
         ajax: {
         	url: "/sell_json",
         	dataType: "json",
-        	type: "POST",
+        	type: "GET",
         	delay: 250,
             data: function(params) {
                 return {
@@ -86,7 +86,7 @@ $(function() {
 		order: [[0, "asc"]],
 		ajax: {
 			url: "/index_json",
-			type: "POST",
+			type: "GET",
 			dataType: "json",
 			dataSrc: "shares_data",
 			contentType:"application/json"

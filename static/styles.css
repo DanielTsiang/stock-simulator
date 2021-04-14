@@ -122,6 +122,10 @@ caption {
     margin-right: 0.5rem;
 }
 
+span.line {
+    /* To specify preferred line break point on mobile display */
+  display: inline-block;
+}
 
 /*==================================================
                   Sticky Footer

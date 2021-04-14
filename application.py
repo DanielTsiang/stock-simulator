@@ -56,7 +56,7 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/index_json", methods=["POST"])
+@app.route("/index_json", methods=["GET"])
 def index_json():
     """Returns JSON data for index page"""
 
@@ -86,11 +86,11 @@ def index_json():
     return jsonify({"shares_data": SHARES, "cash_data": CASH})
 
 
-@app.route("/select_json", methods=["POST"])
+@app.route("/select_json", methods=["GET"])
 def select_json():
     """Returns JSON data for select query for quote and buy modals"""
 
-    symbol_query = request.form.get("q", "")
+    symbol_query = request.args.get("q", "")
 
     # if no symbol query provided
     if not symbol_query:
@@ -200,18 +200,44 @@ def buyCheck():
         return jsonify(True)
 
 
-@app.route("/history")
+@app.route("/history", methods=["GET", "POST"])
 @login_required
 def history():
-    """Show history of transactions"""
+    # Access user's id
+    user_id = session["user_id"]
+
+    """Clear or show history of transactions"""
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        # Clear all of user's transactions
+        test = db.execute("DELETE FROM history WHERE user_id = ?", user_id)
+
+        print(f"entered history post: {test}")
+
+        # Return success status
+        return jsonify(True)
+
+    # User reached route via GET
+    else:
+        return render_template("history.html")
+
+
+@app.route("/history_json", methods=["GET"])
+def history_json():
+    """Returns JSON data for history of transactions"""
 
     # Access user's id
     user_id = session["user_id"]
 
     # Obtain history information for logged in user
-    TRANSACTIONS = db.execute("SELECT * FROM history WHERE user_id = ? ORDER BY transacted DESC", user_id)
+    transactions = db.execute("SELECT * FROM history WHERE user_id = ? ORDER BY transacted DESC", user_id)
 
-    return render_template("history.html", transactions=TRANSACTIONS)
+    # Convert to USD price and UK datetime formats
+    for transaction in transactions:
+        transaction["price"] = usd(transaction["price"])
+        transaction["transacted"] = datetimeformat(transaction["transacted"])
+
+    return jsonify({"data": transactions})
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -477,14 +503,14 @@ def sell():
             return jsonify(True)
 
 
-@app.route("/sell_json", methods=["POST"])
+@app.route("/sell_json", methods=["GET"])
 def sell_json():
     """Returns JSON data for select query for sell modal"""
 
     # Access user's id
     user_id = session["user_id"]
 
-    symbol_query = request.form.get("q", "")
+    symbol_query = request.args.get("q", "")
 
     # Select share symbols from shares table for logged in user
     shares = db.execute("SELECT symbol FROM shares WHERE user_id = ?", user_id)
@@ -509,7 +535,7 @@ def eligibleSymbols():
     return render_template("symbols.html")
 
 
-@app.route("/symbols_json", methods=["POST"])
+@app.route("/symbols_json", methods=["GET"])
 def symbols_json():
     """Returns JSON data for eligible symbols"""
 

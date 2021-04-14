@@ -16,32 +16,37 @@
                     <th scope="col">Transaction Timestamp (UTC)</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for transaction in transactions %}
-                    <tr>
-                        <td>{{ transaction.symbol }}</td>
-                        <td>{{ transaction.shares }}</td>
-                        <td>{{ transaction.price | usd }}</td>
-                        <td>{{ transaction.transacted | datetimeformat }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
         </table>
     </div>
 
-    <!-- script for sorting table -->
-    <script>
-        $(document).ready( function() {
-            // Configure date sorting
-            $.fn.dataTable.moment("DD-MM-YYYY HH:mm:ss");
+    <!-- Button to trigger modal -->
+    <div class="mb-4">
+        <button type="button" class="btn btn-sm btn-outline-danger float-left mt-3" data-toggle="modal" data-target="#historyModal">Clear History</button>
+    </div>
 
-            // Load table
-            $("#history").DataTable({
-                scrollX: true,
-                scrollY: "35rem",
-                scrollCollapse: true,
-                order: [[ 3, "desc" ]]
-            });
-        });
-    </script>
+    <!-- History modal -->
+	<div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="historyModalTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="form">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="historyModalLongtitle">Are you sure?</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form name="history-form">
+				    <div class="modal-body">
+                        <p>Clearing your history will permanently delete all of your transaction records and cannot be recovered.</p>
+				    </div>
+    				<div class="modal-footer">
+    					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    					<button id="clear-history" type="button" class="btn btn-danger">Clear</button>
+    				</div>
+                </form>
+			</div>
+		</div>
+	</div>
+
+    <!--- Import custom script for sorting table -->
+    <script src="/static/history.js"></script>
 {% endblock %}
