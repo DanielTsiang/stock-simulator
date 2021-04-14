@@ -103,6 +103,16 @@ span.is-valid {
     display:block;
 }
 
+.dataTables_wrapper .col-sm-12 {
+    padding-left: 0;
+    margin-top: 0.5rem;
+}
+
+caption {
+    padding-top: 0;
+}
+
+
 /*==================================================
                   Sticky Footer
 ====================================================*/
