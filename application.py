@@ -214,8 +214,6 @@ def history():
         # Clear all of user's transactions
         test = db.execute("DELETE FROM history WHERE user_id = ?", user_id)
 
-        print(f"entered history post: {test}")
-
         # Return success status
         return jsonify(True)
 
