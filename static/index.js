@@ -231,10 +231,10 @@ $(function() {
                     url: "/buyCheck",
                     type: "POST",
                     beforeSend: function() {
-                        $("#username").addClass("loading");
+                        $("#shares-buy").addClass("loading");
                     },
                     complete: function() {
-                        $("#username").removeClass("loading");
+                        $("#shares-buy").removeClass("loading");
                     },
                     data: {
                         // Send additional data along with the default data
@@ -317,10 +317,10 @@ $(function() {
                     url: "/sellCheck",
                     type: "POST",
                     beforeSend: function() {
-                        $("#username").addClass("loading");
+                        $("#shares-sell").addClass("loading");
                     },
                     complete: function() {
-                        $("#username").removeClass("loading");
+                        $("#shares-sell").removeClass("loading");
                     },
                     data: {
                         // Send additional data along with the default data
