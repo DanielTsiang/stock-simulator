@@ -146,7 +146,7 @@ def buy():
     db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash_total, user_id)
 
     # Insert buy log into history table
-    db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, NOW())",
+    db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
                user_id, symbol, shares, price)
 
     # Keep track of shares in shares table
@@ -452,7 +452,7 @@ def sell():
         db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash_total, user_id)
 
         # Insert sell log into history table
-        db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, NOW())",
+        db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
                    user_id, symbol, -(shares), price)
 
         # Keep track of shares in shares table

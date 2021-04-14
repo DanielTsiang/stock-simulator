@@ -93,5 +93,5 @@ def usd(value):
 
 
 def datetimeformat(dt_string, format="%d-%m-%Y %H:%M:%S"):
-    dt_object = datetime.strptime(dt_string, "%Y-%m-%d %H:%M:%S")
+    dt_object = datetime.strptime(str(dt_string), "%Y-%m-%d %H:%M:%S")
     return dt_object.strftime(format)
