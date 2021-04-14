@@ -57,6 +57,7 @@ def index():
 
 
 @app.route("/index_json", methods=["GET"])
+@login_required
 def index_json():
     """Returns JSON data for index page"""
 
@@ -87,6 +88,7 @@ def index_json():
 
 
 @app.route("/select_json", methods=["GET"])
+@login_required
 def select_json():
     """Returns JSON data for select query for quote and buy modals"""
 
@@ -223,6 +225,7 @@ def history():
 
 
 @app.route("/history_json", methods=["GET"])
+@login_required
 def history_json():
     """Returns JSON data for history of transactions"""
 
@@ -316,6 +319,7 @@ def quote():
 
 
 @app.route("/symbolCheck", methods=["POST"])
+@login_required
 def symbolCheck():
     """Check if eligible symbol entered"""
 
@@ -337,6 +341,7 @@ def symbolCheck():
 
 
 @app.route("/sellCheck", methods=["POST"])
+@login_required
 def sharesCheck():
     """Check if valid shares quantity entered"""
 
@@ -504,6 +509,7 @@ def sell():
 
 
 @app.route("/sell_json", methods=["GET"])
+@login_required
 def sell_json():
     """Returns JSON data for select query for sell modal"""
 
@@ -536,6 +542,7 @@ def eligibleSymbols():
 
 
 @app.route("/symbols_json", methods=["GET"])
+@login_required
 def symbols_json():
     """Returns JSON data for eligible symbols"""
 
@@ -596,6 +603,7 @@ def password():
 
 
 @app.route("/passwordCheck", methods=["POST"])
+@login_required
 def passwordCheck():
     """Check if user entered correct old password"""
 
@@ -618,6 +626,7 @@ def passwordCheck():
 
 
 @app.route("/cash", methods=["POST"])
+@login_required
 def cash():
     """Update user's cash amount"""
 
