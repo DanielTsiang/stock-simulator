@@ -12,9 +12,18 @@ from helpers import apology, login_required, lookup, usd, datetimeformat, all_sy
 # Configure application
 app = Flask(__name__)
 
-
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+
+@app.before_request
+def before_request():
+    # if http is requested then redirect to https
+    if request.headers.get('X-Forwarded-Proto') == 'http':
+        url = request.url.replace('http://', 'https://', 1)
+        print("redirected to https?")
+        code = 301
+        return redirect(url, code=code)
 
 
 # Ensure responses aren't cached
