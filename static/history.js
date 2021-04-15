@@ -29,6 +29,7 @@ $(function() {
         ],
     });
 
+    // Clear history when button clicked
     $("#clear-history").on("click", function(event) {
         $.ajax({
             url: "/history",
@@ -53,5 +54,10 @@ $(function() {
             }
         });
     });
+
+    // Disable clear history button until checkbox is checked
+    $("#checkbox").change(function() {
+        $("#clear-history").prop("disabled", !this.checked);
+    }).change();
 
 });
