@@ -21,7 +21,6 @@ def before_request():
     # if http is requested then redirect to https
     if request.headers.get('X-Forwarded-Proto') == 'http':
         url = request.url.replace('http://', 'https://', 1)
-        print("redirected to https?")
         code = 301
         return redirect(url, code=code)
 
