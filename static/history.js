@@ -60,4 +60,15 @@ $(function() {
         $("#clear-history").prop("disabled", !this.checked);
     }).change();
 
+    // Reset all modals when hidden
+	$(".modal").on("hidden.bs.modal", function(){
+	    // Define alias for checkbox
+	    let chkbox = $("#checkbox");
+
+	    // Reset checkbox to unchecked
+        chkbox.prop("checked", false);
+        // Reset clear history button to disabled
+        $("#clear-history").prop("disabled", !chkbox.checked); //true: disabled, false: enabled
+    });
+
 });

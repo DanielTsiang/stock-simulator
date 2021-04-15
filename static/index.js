@@ -450,7 +450,7 @@ $(function() {
 	});
 
 	// Reset all modals when hidden
-	$(".modal").on("hidden.bs.modal", function(errorClass, validClass){
+	$(".modal").on("hidden.bs.modal", function(){
 	    // Reset all form fields and validation on page
         $("form").each( function() {
 	        this.reset();
