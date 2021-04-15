@@ -57,8 +57,8 @@ $(function() {
 
     // Disable clear history button until checkbox is checked
     $("#checkbox").change(function() {
-        $("#clear-history").prop("disabled", !this.checked);
-    }).change();
+        $("#clear-history").prop("disabled", !this.checked); //true: disabled, false: enabled
+    }).change(); //trigger event
 
     // Reset all modals when hidden
 	$(".modal").on("hidden.bs.modal", function(){
@@ -68,7 +68,7 @@ $(function() {
 	    // Reset checkbox to unchecked
         chkbox.prop("checked", false);
         // Reset clear history button to disabled
-        $("#clear-history").prop("disabled", !chkbox.checked); //true: disabled, false: enabled
+        $("#clear-history").prop("disabled", !chkbox.checked);
     });
 
 });
