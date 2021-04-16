@@ -5,7 +5,7 @@ A web app that simulates managing portfolios of stocks, using real stocks’ pri
 
 ### Demo
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/74436899/114772989-63b58e80-9d66-11eb-930a-66e7cf8f471d.gif" width="600px" height="433px" alt="demo">
+  <img src="https://user-images.githubusercontent.com/74436899/115057720-528e8e00-9edc-11eb-8c97-61a974e3a996.gif" width="600px" height="433px" alt="demo">
 </p>
 
 ### Technologies Used
