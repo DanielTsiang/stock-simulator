@@ -6,7 +6,6 @@ $(function() {
         validClass: "is-valid",
         highlight: function(element, errorClass, validClass) {
             $(element).addClass(errorClass).removeClass(validClass);
-            $(".info-icon").css("display", "none");
         },
         unhighlight: function(element, errorClass, validClass) {
             $(element).removeClass(errorClass).addClass(validClass);
@@ -54,12 +53,18 @@ $(function() {
             password: {
                 required: true,
                 minlength: 5,
-                pwcheck: true
+                pwcheck: true,
+                beforeSend: function() {
+                    $("#info-icon1").css("display", "none");
+                },
             },
             confirmation: {
                 required: true,
                 minlength: 5,
-                equalTo: "#password"
+                equalTo: "#password",
+                beforeSend: function() {
+                    $("#info-icon2").css("display", "none");
+                },
             },
         },
         // Specify validation error messages
