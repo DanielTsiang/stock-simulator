@@ -6,6 +6,7 @@ $(function() {
         validClass: "is-valid",
         highlight: function(element, errorClass, validClass) {
             $(element).addClass(errorClass).removeClass(validClass);
+            $(".info-icon").css("display", "none");
         },
         unhighlight: function(element, errorClass, validClass) {
             $(element).removeClass(errorClass).addClass(validClass);
@@ -98,5 +99,8 @@ $(function() {
         return /[A-Z]/.test(value) // has an uppercase letter
             && /\d/.test(value); // has a digit
     });
+
+    // Initialise all tooltips on page
+    $('[data-toggle="tooltip"]').tooltip();
 
 });
