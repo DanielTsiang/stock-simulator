@@ -53,8 +53,7 @@ def lookup(symbols):
 
     # Parse response
     try:
-        quote = response.json()
-        return quote
+        return response.json()
     except (KeyError, TypeError, ValueError):
         return None
 
