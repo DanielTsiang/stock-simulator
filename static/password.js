@@ -88,6 +88,7 @@ $(function() {
                     old_password: $(form).find("input[name='old_password']").val(),
                     new_password: $(form).find("input[name='new_password']").val(),
                     confirmation: $(form).find("input[name='confirmation']").val(),
+                },
 	    });
 
             // disable submit button
