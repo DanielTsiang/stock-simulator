@@ -81,7 +81,9 @@ $(function() {
         // Make sure the form is submitted to the destination defined
         // in the "action" attribute of the form when valid
         submitHandler: function(form) {
-            form.submit();
+            $.ajax({
+            	method: "PATCH",
+	    });
 
             // disable submit button
             $("button[type='submit']").prop("disabled", true);
