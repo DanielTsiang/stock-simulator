@@ -555,13 +555,13 @@ def symbols_json():
     return jsonify({"data": symbols_data})
 
 
-@app.route("/password", methods=["GET", "POST"])
+@app.route("/password", methods=["GET", "PATCH"])
 @login_required
 def password():
     """Change user's password"""
 
     # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
+    if request.method == "PATCH":
 
         # Access user's id
         user_id = session["user_id"]
