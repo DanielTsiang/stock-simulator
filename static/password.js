@@ -82,7 +82,12 @@ $(function() {
         // in the "action" attribute of the form when valid
         submitHandler: function(form) {
             $.ajax({
+                url: "/password",
             	method: "PATCH",
+                data: {
+                    old_password: $(form).find("input[name='old_password']").val(),
+                    new_password: $(form).find("input[name='new_password']").val(),
+                    confirmation: $(form).find("input[name='confirmation']").val(),
 	    });
 
             // disable submit button
