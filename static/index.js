@@ -160,7 +160,7 @@ $(function() {
                 symbol_check: true,
                 remote: {
                     url: "/symbolCheck",
-                    type: "POST"
+                    type: "GET"
                 }
             },
         },
@@ -176,7 +176,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/quote",
-                method: "POST",
+                method: "GET",
                 data: {
                     symbol_quote: $(form).find("select[name='symbol_quote']").val(),
                 },
@@ -222,14 +222,14 @@ $(function() {
                 symbol_check: true,
                 remote: {
                     url: "/symbolCheck",
-                    type: "POST"
+                    type: "GET"
                 }
             },
             shares_buy: {
                 required: true,
                 remote: {
                     url: "/buyCheck",
-                    type: "POST",
+                    type: "GET",
                     beforeSend: function() {
                         $("#shares-buy").addClass("loading");
                     },
@@ -308,14 +308,14 @@ $(function() {
                 symbol_check: true,
                 remote: {
                     url: "/symbolCheck",
-                    type: "POST"
+                    type: "GET"
                 }
             },
             shares_sell: {
                 required: true,
                 remote: {
                     url: "/sellCheck",
-                    type: "POST",
+                    type: "GET",
                     beforeSend: function() {
                         $("#shares-sell").addClass("loading");
                     },
@@ -350,7 +350,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/sell",
-                method: "POST",
+                method: "PATCH",
                 data: {
                     symbol_sell: $(form).find("select[name='symbol_sell']").val(),
                     shares_sell: sell.getNumber(), // Return the unformatted number from autoNumeric method

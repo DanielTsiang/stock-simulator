@@ -178,7 +178,7 @@ def buy():
     return jsonify(True)
 
 
-@app.route("/buyCheck", methods=["POST"])
+@app.route("/buyCheck", methods=["GET"])
 @login_required
 def buyCheck():
     """Check if user has enough cash to buy requested amount of shares"""
@@ -297,7 +297,7 @@ def logout():
     return redirect("/login")
 
 
-@app.route("/quote", methods=["POST"])
+@app.route("/quote", methods=["GET"])
 @login_required
 def quote():
     """Get stock quote."""
@@ -320,7 +320,7 @@ def quote():
     return jsonify(QUOTED=QUOTED, symbol=symbol)
 
 
-@app.route("/symbolCheck", methods=["POST"])
+@app.route("/symbolCheck", methods=["GET"])
 @login_required
 def symbolCheck():
     """Check if eligible symbol entered"""
@@ -342,7 +342,7 @@ def symbolCheck():
         return jsonify(False)
 
 
-@app.route("/sellCheck", methods=["POST"])
+@app.route("/sellCheck", methods=["GET"])
 @login_required
 def sharesCheck():
     """Check if valid shares quantity entered"""
@@ -423,7 +423,7 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/usernameCheck", methods=["POST"])
+@app.route("/usernameCheck", methods=["GET"])
 def usernameCheck():
     """Check if username already exists"""
 
@@ -442,7 +442,7 @@ def usernameCheck():
         return jsonify(False)
 
 
-@app.route("/sell", methods=["POST"])
+@app.route("/sell", methods=["PATCH"])
 @login_required
 def sell():
     """Sell shares of stock"""
