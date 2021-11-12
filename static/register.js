@@ -41,7 +41,7 @@ $(function() {
                 required: true,
                 remote: {
                     url: "/usernameCheck",
-                    type: "POST",
+                    type: "GET",
                     beforeSend: function() {
                         $("#username").addClass("loading");
                     },
