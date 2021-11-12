@@ -89,25 +89,37 @@ $(function() {
                     new_password: $(form).find("input[name='new_password']").val(),
                     confirmation: $(form).find("input[name='confirmation']").val(),
                 },
+                beforeSend: function() {
+                    // Disable submit button
+                    $("button[type='submit']").prop("disabled", true);
+
+                    // Add spinner to submit button
+                    $("button[type='submit']").html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                },
                 success: function(response){
-                    // Reset form
+                    // Reset form fields
                     $("form[name='password']")[0].reset();
+
+                    // Remove validation classes and errorElements
+                    $("input, span, div, select").removeClass("is-invalid is-valid");
+                    $("span[class=has-error]").remove();
 
                     // Show password alert
                     $("#password-alert").fadeIn();
+                },
+                complete: function() {
+                    // Remove spinner from submit button
+                    $("button[type='submit']").html("Change Password");
+
+                    // Enable submit button
+                    $("button[type='submit']").prop("disabled", false);
                 },
                 error: function(xhr, status, error) {
                     alert(`${status}: ${error}`);
                 }
 	        });
-
-            // disable submit button
-            $("button[type='submit']").prop("disabled", true);
-
-            // add spinner to submit button
-            $("button[type='submit']").html(
-                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-            );
         }
     });
 
@@ -116,6 +128,13 @@ $(function() {
         return /[A-Z]/.test(value) // has an uppercase letter
             && /\d/.test(value); // has a digit
     });
+
+    // Fade out dismissible alert message, allows alert message to fade back in later
+	$(function(){
+		$("[data-hide]").on("click", function() {
+			$(this).closest("." + $(this).attr("data-hide")).fadeOut();
+		});
+	});
 
     // Initialise all tooltips on page
     $('[data-toggle="tooltip"]').tooltip();
