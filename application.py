@@ -210,17 +210,17 @@ def buyCheck():
         return jsonify(True)
 
 
-@app.route("/history", methods=["GET", "POST"])
+@app.route("/history", methods=["GET", "DELETE"])
 @login_required
 def history():
     # Access user's id
     user_id = session["user_id"]
 
     """Clear or show history of transactions"""
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
+    # User reached route via DELETE (as by submitting a form via DELETE)
+    if request.method == "DELETE":
         # Clear all of user's transactions
-        test = db.execute("DELETE FROM history WHERE user_id = ?", user_id)
+        db.execute("DELETE FROM history WHERE user_id = ?", user_id)
 
         # Return success status
         return jsonify(True)
