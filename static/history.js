@@ -33,7 +33,7 @@ $(function() {
     $("#clear-history").on("click", function(event) {
         $.ajax({
             url: "/history",
-            method: "POST",
+            method: "DELETE",
             beforeSend: function() {
                 $("#loading-overlay").fadeIn(300);
             },
