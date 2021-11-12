@@ -631,7 +631,7 @@ def passwordCheck():
         return jsonify(True)
 
 
-@app.route("/cash", methods=["PUT"])
+@app.route("/cash", methods=["PATCH"])
 @login_required
 def cash():
     """Update user's cash amount"""
