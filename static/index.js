@@ -442,7 +442,7 @@ $(function() {
         return /^[a-zA-Z \.^#=+-]+$/.test(value); // check only valid symbol characters entered
     });
 
-    // Fade out dismissible alert message, allows alert message to fade back in later.
+    // Fade out dismissible alert message, allows alert message to fade back in later
 	$(function(){
 		$("[data-hide]").on("click", function() {
 			$(this).closest("." + $(this).attr("data-hide")).fadeOut();
