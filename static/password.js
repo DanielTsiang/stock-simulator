@@ -89,7 +89,17 @@ $(function() {
                     new_password: $(form).find("input[name='new_password']").val(),
                     confirmation: $(form).find("input[name='confirmation']").val(),
                 },
-	    });
+                success: function(response){
+                    // Reset form
+                    $("form[name='password']")[0].reset();
+
+                    // Show password alert
+                    $("#password-alert").fadeIn();
+                },
+                error: function(xhr, status, error) {
+                    alert(`${status}: ${error}`);
+                }
+	        });
 
             // disable submit button
             $("button[type='submit']").prop("disabled", true);

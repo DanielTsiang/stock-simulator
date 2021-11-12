@@ -107,11 +107,10 @@ def select_json():
         return jsonify({"symbols": symbols_only_data})
 
     # filter symbol results based on symbol query
-    else:
-        # Use dict comprehension inside a list comprehension with if condition to remove unwanted key value pairs from list of dictionaries and filter by value
-        filtered_symbols_only_data = [{key: value for key, value in data.items() if key == "Symbol"} for data in symbols_data if symbol_query.upper() in data["Symbol"]]
+    # Use dict comprehension inside a list comprehension with if condition to remove unwanted key value pairs from list of dictionaries and filter by value
+    filtered_symbols_only_data = [{key: value for key, value in data.items() if key == "Symbol"} for data in symbols_data if symbol_query.upper() in data["Symbol"]]
 
-        return jsonify({"symbols": filtered_symbols_only_data})
+    return jsonify({"symbols": filtered_symbols_only_data})
 
 
 @app.route("/buy", methods=["POST"])
@@ -217,17 +216,16 @@ def history():
     user_id = session["user_id"]
 
     """Clear or show history of transactions"""
-    # User reached route via DELETE (as by submitting a form via DELETE)
-    if request.method == "DELETE":
-        # Clear all of user's transactions
-        db.execute("DELETE FROM history WHERE user_id = ?", user_id)
-
-        # Return success status
-        return jsonify(True)
-
     # User reached route via GET
-    else:
+    if request.method == "GET":
         return render_template("history.html")
+
+    # User reached route via DELETE (as by submitting a form via DELETE)
+    # Clear all of user's transactions
+    db.execute("DELETE FROM history WHERE user_id = ?", user_id)
+
+    # Return success status
+    return jsonify(True)
 
 
 @app.route("/history_json", methods=["GET"])
@@ -256,38 +254,36 @@ def login():
     # Forget any user_id
     session.clear()
 
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-
-        # Access form data
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        # Ensure username was submitted
-        if not username:
-            return apology("must provide username", 400)
-
-        # Ensure password was submitted
-        elif not password:
-            return apology("must provide password", 400)
-
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
-            flash("Incorrect username and/or password", "danger")
-            return render_template("login.html")
-
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
-
-        # Redirect user to home page
-        return redirect("/")
-
     # User reached route via GET (as by clicking a link or via redirect)
-    else:
+    if request.method == "GET":
         return render_template("login.html")
+
+    # User reached route via POST (as by submitting a form via POST)
+    # Access form data
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    # Ensure username was submitted
+    if not username:
+        return apology("must provide username", 400)
+
+    # Ensure password was submitted
+    elif not password:
+        return apology("must provide password", 400)
+
+    # Query database for username
+    rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+
+    # Ensure username exists and password is correct
+    if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
+        flash("Incorrect username and/or password", "danger")
+        return render_template("login.html")
+
+    # Remember which user has logged in
+    session["user_id"] = rows[0]["id"]
+
+    # Redirect user to home page
+    return redirect("/")
 
 
 @app.route("/logout")
@@ -380,52 +376,50 @@ def sharesCheck():
 def register():
     """Register user"""
 
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-
-        # Access form data
-        username = request.form.get("username")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
-
-        # Ensure username was submitted
-        if not username:
-            return apology("must provide username", 400)
-
-        # Ensure password was submitted
-        elif not password:
-            return apology("must provide password", 400)
-
-        # Ensure password confirmation was submitted
-        elif not confirmation:
-            return apology("must provide password confirmation", 400)
-
-        # Ensure password matches password confirmation
-        elif password != confirmation:
-            return apology("passwords do not match", 400)
-
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-
-        # Username does not already exist
-        if not rows:
-
-            # Insert data into database
-            user_id = db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username, generate_password_hash(password))
-
-            # Remember which user has logged in
-            session["user_id"] = user_id
-
-            # Redirect user to home page
-            return redirect("/")
-
-        # Username already exists
-        else:
-            flash("Username is already taken", "danger")
-            return render_template("register.html")
-
     # User reached route via GET
+    if request.method == "GET":
+        return render_template("register.html")
+
+    # User reached route via POST (as by submitting a form via POST)
+    # Access form data
+    username = request.form.get("username")
+    password = request.form.get("password")
+    confirmation = request.form.get("confirmation")
+
+    # Ensure username was submitted
+    if not username:
+        return apology("must provide username", 400)
+
+    # Ensure password was submitted
+    elif not password:
+        return apology("must provide password", 400)
+
+    # Ensure password confirmation was submitted
+    elif not confirmation:
+        return apology("must provide password confirmation", 400)
+
+    # Ensure password matches password confirmation
+    elif password != confirmation:
+        return apology("passwords do not match", 400)
+
+    # Query database for username
+    rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+
+    # Username does not already exist
+    if not rows:
+
+        # Insert data into database
+        user_id = db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username, generate_password_hash(password))
+
+        # Remember which user has logged in
+        session["user_id"] = user_id
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # Username already exists
     else:
+        flash("Username is already taken", "danger")
         return render_template("register.html")
 
 
@@ -478,40 +472,36 @@ def sell():
         return apology("not enough shares owned", 400)
 
     # User has enough shares to sell as requested
+    # Calculate new cash amount user has
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+    price = float(QUOTED[symbol]["quote"]["latestPrice"])
+    cash_gained = price * shares
+    new_cash_total = cash + cash_gained
+
+    # Update cash in users table for user
+    db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash_total, user_id)
+
+    # Insert sell log into history table
+    db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
+                user_id, symbol, -(shares), price)
+
+    # Keep track of shares in shares table
+    current_shares = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
+                                user_id, symbol)[0]["shares_count"]
+    new_shares_total = current_shares - shares
+
+    # If 0 shares left of the stock owned
+    if new_shares_total == 0:
+        db.execute("DELETE FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)
+
+    # User still owns shares of the stock
     else:
-        # Calculate new cash amount user has
-        cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-        price = float(QUOTED[symbol]["quote"]["latestPrice"])
-        cash_gained = price * shares
-        new_cash_total = cash + cash_gained
+        shares_value_total = new_shares_total * price
+        db.execute("UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
+                    new_shares_total, price, shares_value_total, user_id, symbol)
 
-        # Update cash in users table for user
-        db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash_total, user_id)
-
-        # Insert sell log into history table
-        db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
-                   user_id, symbol, -(shares), price)
-
-        # Keep track of shares in shares table
-        current_shares = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
-                                    user_id, symbol)[0]["shares_count"]
-        new_shares_total = current_shares - shares
-
-        # If 0 shares left of the stock owned
-        if new_shares_total == 0:
-            db.execute("DELETE FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)
-
-            # Return success status
-            return jsonify(True)
-
-        # User still owns shares of the stock
-        else:
-            shares_value_total = new_shares_total * price
-            db.execute("UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-                       new_shares_total, price, shares_value_total, user_id, symbol)
-
-            # Return success status
-            return jsonify(True)
+    # Return success status
+    return jsonify(True)
 
 
 @app.route("/sell_json", methods=["GET"])
@@ -532,11 +522,10 @@ def sell_json():
         return jsonify({"symbols": shares})
 
     # filter symbol results based on symbol query
-    else:
-        # Use list comprehension with if condition to filter by symbol query
-        filtered_shares = [data for data in shares if symbol_query.upper() in data["symbol"]]
+    # Use list comprehension with if condition to filter by symbol query
+    filtered_shares = [data for data in shares if symbol_query.upper() in data["symbol"]]
 
-        return jsonify({"symbols": filtered_shares})
+    return jsonify({"symbols": filtered_shares})
 
 
 @app.route("/eligibleSymbols")
@@ -560,52 +549,50 @@ def symbols_json():
 def password():
     """Change user's password"""
 
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "PATCH":
-
-        # Access user's id
-        user_id = session["user_id"]
-
-        # Access form data
-        old_password = request.form.get("old_password")
-        new_password = request.form.get("new_password")
-        confirmation = request.form.get("confirmation")
-
-        # Ensure old password was submitted
-        if not old_password:
-            return apology("must provide old password", 400)
-
-        # Ensure new password was submitted
-        elif not new_password:
-            return apology("must provide new password", 400)
-
-        # Ensure password confirmation was submitted
-        elif not confirmation:
-            return apology("must provide password confirmation", 400)
-
-        # Ensure password matches password confirmation
-        elif new_password != confirmation:
-            return apology("passwords do not match", 400)
-
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE id = ?", user_id)
-
-        # Ensure old password is correct
-        if not check_password_hash(rows[0]["hash"], old_password):
-            flash("Incorrect old password", "danger")
-            return render_template("password.html")
-
-        # Correct old password
-        else:
-            # Update user's password in database
-            db.execute("UPDATE users SET hash = ? WHERE id = ?", generate_password_hash(new_password), user_id)
-
-            flash("Password successfully changed", "success")
-            return redirect("/")
-
     # User reached route via GET
-    else:
+    if request.method == "GET":
         return render_template("password.html")
+
+    # User reached route via PATCH (as by submitting a form via PATCH)
+    # Access user's id
+    user_id = session["user_id"]
+
+    # Access form data
+    old_password = request.form.get("old_password")
+    new_password = request.form.get("new_password")
+    confirmation = request.form.get("confirmation")
+
+    # Ensure old password was submitted
+    if not old_password:
+        return apology("must provide old password", 400)
+
+    # Ensure new password was submitted
+    elif not new_password:
+        return apology("must provide new password", 400)
+
+    # Ensure password confirmation was submitted
+    elif not confirmation:
+        return apology("must provide password confirmation", 400)
+
+    # Ensure password matches password confirmation
+    elif new_password != confirmation:
+        return apology("passwords do not match", 400)
+
+    # Query database for username
+    rows = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+
+    # Ensure old password is correct
+    if not check_password_hash(rows[0]["hash"], old_password):
+        flash("Incorrect old password", "danger")
+        return render_template("password.html")
+
+    # Correct old password
+    else:
+        # Update user's password in database
+        db.execute("UPDATE users SET hash = ? WHERE id = ?", generate_password_hash(new_password), user_id)
+
+        # Return success status
+        return jsonify(True)
 
 
 @app.route("/passwordCheck", methods=["POST"])
