@@ -403,7 +403,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/cash",
-                method: "POST",
+                method: "PUT",
                 data: {
                     cash: cash.getNumber(), // Return the unformatted number from autoNumeric method
                 },
