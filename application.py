@@ -187,8 +187,8 @@ def buyCheck():
     user_id = session["user_id"]
 
     # Access form data
-    symbol = request.form.get("symbol_buy")
-    shares = int(request.form.get("shares_buy"))
+    symbol = request.args.get("symbol_buy")
+    shares = int(request.args.get("shares_buy"))
 
     # User did not supply symbol
     if not symbol:
@@ -303,7 +303,7 @@ def quote():
     """Get stock quote."""
 
     # Access form data
-    symbol = request.form.get("symbol_quote")
+    symbol = request.args.get("symbol_quote")
 
     # Ensure quote symbol was submitted
     if not symbol:
@@ -326,12 +326,12 @@ def symbolCheck():
     """Check if eligible symbol entered"""
 
     # Access form data
-    if request.form.get("symbol_quote"):
-        symbol = request.form.get("symbol_quote").upper()
-    elif request.form.get("symbol_buy"):
-        symbol = request.form.get("symbol_buy").upper()
+    if request.args.get("symbol_quote"):
+        symbol = request.args.get("symbol_quote").upper()
+    elif request.args.get("symbol_buy"):
+        symbol = request.args.get("symbol_buy").upper()
     else:
-        symbol = request.form.get("symbol_sell").upper()
+        symbol = request.args.get("symbol_sell").upper()
 
     # Valid IEX symbol
     if symbol in symbols_list:
@@ -351,14 +351,14 @@ def sharesCheck():
     user_id = session["user_id"]
 
     # Access form data for symbol
-    symbol = request.form.get("symbol_sell")
+    symbol = request.args.get("symbol_sell")
 
     # User did not supply symbol
     if not symbol:
         return jsonify(True)
 
     # Access form data for shares quantity
-    shares = int(request.form.get("shares_sell"))
+    shares = int(request.args.get("shares_sell"))
 
     # Select information from shares table for logged in user
     shares_count = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)[0]["shares_count"]
@@ -428,7 +428,7 @@ def usernameCheck():
     """Check if username already exists"""
 
     # Access form data
-    username = request.form.get("username")
+    username = request.args.get("username")
 
     # Query database for username
     rows = db.execute("SELECT * FROM users WHERE username = ?", username)
