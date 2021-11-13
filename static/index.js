@@ -264,7 +264,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/buy",
-                method: "POST",
+                method: "PUT",
                 data: {
                     symbol_buy: $(form).find("select[name='symbol_buy']").val(),
                     shares_buy: buy.getNumber(), // Return the unformatted number from autoNumeric method

@@ -113,7 +113,7 @@ def select_json():
     return jsonify({"symbols": filtered_symbols_only_data})
 
 
-@app.route("/buy", methods=["POST"])
+@app.route("/buy", methods=["PUT"])
 @login_required
 def buy():
     """Buy shares of stock"""
