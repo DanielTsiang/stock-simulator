@@ -1,7 +1,7 @@
 # Stock Simulator
 
 ## Description
-A web app that simulates managing portfolios of stocks, using real stocks’ prices by querying an API.
+A RESTful web app that simulates managing portfolios of stocks, using real stocks’ prices by querying an API.
 
 ### Demo
 <p align="center">
