@@ -350,7 +350,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/sell",
-                method: "PATCH",
+                method: "PUT",
                 data: {
                     symbol_sell: $(form).find("select[name='symbol_sell']").val(),
                     shares_sell: sell.getNumber(), // Return the unformatted number from autoNumeric method
@@ -403,7 +403,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/cash",
-                method: "PATCH",
+                method: "PUT",
                 data: {
                     cash: cash.getNumber(), // Return the unformatted number from autoNumeric method
                 },

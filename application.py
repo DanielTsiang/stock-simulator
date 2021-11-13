@@ -442,7 +442,7 @@ def usernameCheck():
         return jsonify(False)
 
 
-@app.route("/sell", methods=["PATCH"])
+@app.route("/sell", methods=["PUT"])
 @login_required
 def sell():
     """Sell shares of stock"""
@@ -544,7 +544,7 @@ def symbols_json():
     return jsonify({"data": symbols_data})
 
 
-@app.route("/password", methods=["GET", "PATCH"])
+@app.route("/password", methods=["GET", "PUT"])
 @login_required
 def password():
     """Change user's password"""
@@ -553,7 +553,7 @@ def password():
     if request.method == "GET":
         return render_template("password.html")
 
-    # User reached route via PATCH (as by submitting a form via PATCH)
+    # User reached route via PUT (as by submitting a form via PUT)
     # Access user's id
     user_id = session["user_id"]
 
@@ -618,7 +618,7 @@ def passwordCheck():
         return jsonify(True)
 
 
-@app.route("/cash", methods=["PATCH"])
+@app.route("/cash", methods=["PUT"])
 @login_required
 def cash():
     """Update user's cash amount"""

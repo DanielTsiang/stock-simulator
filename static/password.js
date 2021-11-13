@@ -83,7 +83,7 @@ $(function() {
         submitHandler: function(form) {
             $.ajax({
                 url: "/password",
-            	method: "PATCH",
+            	method: "PUT",
                 data: {
                     old_password: $(form).find("input[name='old_password']").val(),
                     new_password: $(form).find("input[name='new_password']").val(),
@@ -102,9 +102,8 @@ $(function() {
                     // Reset form fields
                     $("form[name='password']")[0].reset();
 
-                    // Remove validation classes and errorElements
+                    // Remove validation classes
                     $("input, span, div, select").removeClass("is-invalid is-valid");
-                    $("span[class=has-error]").remove();
 
                     // Show password alert
                     $("#password-alert").fadeIn();
