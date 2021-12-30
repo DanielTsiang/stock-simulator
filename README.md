@@ -13,10 +13,8 @@ pip3 install -r requirements.txt
 flask run
 ```
 
-### GIF Demo
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/74436899/115057720-528e8e00-9edc-11eb-8c97-61a974e3a996.gif" width="600" height="433" alt="demo">
-</p>
+### Video Demo
+https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-9abf-597f02b1aa52.mp4
 
 ## Specification
 * Design and build a RESTful web app using Python with Flask’s MVC framework, connected to a SQL database. Served by Gunicorn, a production-quality web server.
