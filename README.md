@@ -10,7 +10,7 @@ A RESTful web app that simulates managing portfolios of stocks, using real stock
 ### Running locally
 ```bash
 pip3 install -r requirements.txt
-flask run
+gunicorn application:app --preload
 ```
 
 ### Video Demo

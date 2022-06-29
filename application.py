@@ -1,4 +1,4 @@
-import os, time, sqlalchemy.dialects.sqlite, psycopg2
+import os
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, jsonify
@@ -25,12 +25,17 @@ def before_request():
         return redirect(url, code=code)
 
 
-# Ensure responses aren't cached
 @app.after_request
 def after_request(response):
+    # Ensure responses aren't cached
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
+
+    # Configure HTTP security headers
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return response
 
 
@@ -38,15 +43,22 @@ def after_request(response):
 app.jinja_env.filters["usd"] = usd
 app.jinja_env.filters["datetimeformat"] = datetimeformat
 
-
-# Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+# Configure session to use filesystem (instead of signed cookies), and secure cookies
+app.config.update(
+    SESSION_FILE_DIR=mkdtemp(),
+    SESSION_PERMANENT=False,
+    SESSION_TYPE="filesystem",
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+)
 Session(app)
 
 # Configure CS50 Library to use PostgreSQL database
-db = SQL(os.getenv("DATA_BASE_URL"))
+uri = os.environ.get("DATABASE_URL")
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://")
+db = SQL(uri)
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
@@ -85,7 +97,7 @@ def index_json():
         price = float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
         new_shares_total = share["shares_count"] * float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
         db.execute("UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-                  price, new_shares_total, user_id, share["symbol"])
+                   price, new_shares_total, user_id, share["symbol"])
         share["price"] = price
         share["total"] = new_shares_total
 
@@ -108,7 +120,8 @@ def select_json():
 
     # filter symbol results based on symbol query
     # Use dict comprehension inside a list comprehension with if condition to remove unwanted key value pairs from list of dictionaries and filter by value
-    filtered_symbols_only_data = [{key: value for key, value in data.items() if key == "Symbol"} for data in symbols_data if symbol_query.upper() in data["Symbol"]]
+    filtered_symbols_only_data = [{key: value for key, value in data.items() if key == "Symbol"} for data in
+                                  symbols_data if symbol_query.upper() in data["Symbol"]]
 
     return jsonify({"symbols": filtered_symbols_only_data})
 
@@ -155,8 +168,9 @@ def buy():
     db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash_total, user_id)
 
     # Insert buy log into history table
-    db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
-               user_id, symbol, shares, price)
+    db.execute(
+        "INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
+        user_id, symbol, shares, price)
 
     # Keep track of shares in shares table
     current_shares = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)
@@ -361,7 +375,8 @@ def sharesCheck():
     shares = int(request.args.get("shares_sell"))
 
     # Select information from shares table for logged in user
-    shares_count = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)[0]["shares_count"]
+    shares_count = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
+                              user_id, symbol)[0]["shares_count"]
 
     # Invalid shares quantity
     if shares > shares_count:
@@ -409,7 +424,8 @@ def register():
     if not rows:
 
         # Insert data into database
-        user_id = db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username, generate_password_hash(password))
+        user_id = db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username,
+                             generate_password_hash(password))
 
         # Remember which user has logged in
         session["user_id"] = user_id
@@ -482,8 +498,9 @@ def sell():
     db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash_total, user_id)
 
     # Insert sell log into history table
-    db.execute("INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
-                user_id, symbol, -(shares), price)
+    db.execute(
+        "INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
+        user_id, symbol, -(shares), price)
 
     # Keep track of shares in shares table
     current_shares = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
@@ -498,7 +515,7 @@ def sell():
     else:
         shares_value_total = new_shares_total * price
         db.execute("UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-                    new_shares_total, price, shares_value_total, user_id, symbol)
+                   new_shares_total, price, shares_value_total, user_id, symbol)
 
     # Return success status
     return jsonify(True)
@@ -632,9 +649,6 @@ def cash():
     # Update cash in users table for user
     db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, user_id)
 
-    # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE id = ?", user_id)
-
     # Return success status
     return jsonify(True)
 
@@ -649,7 +663,6 @@ def errorhandler(e):
 # Listen for errors
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
