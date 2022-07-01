@@ -19,8 +19,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 @app.before_request
 def before_request():
     # if http is requested then redirect to https
-    if request.headers.get('X-Forwarded-Proto') == 'http':
-        url = request.url.replace('http://', 'https://', 1)
+    if request.headers.get("X-Forwarded-Proto") == "http":
+        url = request.url.replace("http://", "https://", 1)
         code = 301
         return redirect(url, code=code)
 
@@ -33,9 +33,11 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
 
     # Configure HTTP security headers
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers[
+        "Strict-Transport-Security"
+    ] = "max-age=31536000; includeSubDomains"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
     return response
 
 
@@ -95,9 +97,16 @@ def index_json():
 
     for share in SHARES:
         price = float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
-        new_shares_total = share["shares_count"] * float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
-        db.execute("UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-                   price, new_shares_total, user_id, share["symbol"])
+        new_shares_total = share["shares_count"] * float(
+            QUOTED[share["symbol"]]["quote"]["latestPrice"]
+        )
+        db.execute(
+            "UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?",
+            price,
+            new_shares_total,
+            user_id,
+            share["symbol"],
+        )
         share["price"] = price
         share["total"] = new_shares_total
 
@@ -120,8 +129,11 @@ def select_json():
 
     # filter symbol results based on symbol query
     # Use dict comprehension inside a list comprehension with if condition to remove unwanted key value pairs from list of dictionaries and filter by value
-    filtered_symbols_only_data = [{key: value for key, value in data.items() if key == "Symbol"} for data in
-                                  symbols_data if symbol_query.upper() in data["Symbol"]]
+    filtered_symbols_only_data = [
+        {key: value for key, value in data.items() if key == "Symbol"}
+        for data in symbols_data
+        if symbol_query.upper() in data["Symbol"]
+    ]
 
     return jsonify({"symbols": filtered_symbols_only_data})
 
@@ -170,23 +182,44 @@ def buy():
     # Insert buy log into history table
     db.execute(
         "INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
-        user_id, symbol, shares, price)
+        user_id,
+        symbol,
+        shares,
+        price,
+    )
 
     # Keep track of shares in shares table
-    current_shares = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)
+    current_shares = db.execute(
+        "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
+        user_id,
+        symbol,
+    )
 
     # If shares have not been bought before
     if not current_shares:
         name = QUOTED[symbol]["quote"]["companyName"]
-        db.execute("INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)",
-                   user_id, symbol, name, shares, price, cost)
+        db.execute(
+            "INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)",
+            user_id,
+            symbol,
+            name,
+            shares,
+            price,
+            cost,
+        )
 
     # If shares have been bought before
     else:
         new_shares_total = current_shares[0]["shares_count"] + shares
         shares_value_total = new_shares_total * price
-        db.execute("UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-                   new_shares_total, price, shares_value_total, user_id, symbol)
+        db.execute(
+            "UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
+            new_shares_total,
+            price,
+            shares_value_total,
+            user_id,
+            symbol,
+        )
 
     # Return success status
     return jsonify(True)
@@ -251,7 +284,9 @@ def history_json():
     user_id = session["user_id"]
 
     # Obtain history information for logged in user
-    transactions = db.execute("SELECT * FROM history WHERE user_id = ? ORDER BY transacted DESC", user_id)
+    transactions = db.execute(
+        "SELECT * FROM history WHERE user_id = ? ORDER BY transacted DESC", user_id
+    )
 
     # Convert to USD price and UK datetime formats
     for transaction in transactions:
@@ -375,8 +410,11 @@ def sharesCheck():
     shares = int(request.args.get("shares_sell"))
 
     # Select information from shares table for logged in user
-    shares_count = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
-                              user_id, symbol)[0]["shares_count"]
+    shares_count = db.execute(
+        "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
+        user_id,
+        symbol,
+    )[0]["shares_count"]
 
     # Invalid shares quantity
     if shares > shares_count:
@@ -424,8 +462,11 @@ def register():
     if not rows:
 
         # Insert data into database
-        user_id = db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username,
-                             generate_password_hash(password))
+        user_id = db.execute(
+            "INSERT INTO users (username, hash) VALUES (?, ?)",
+            username,
+            generate_password_hash(password),
+        )
 
         # Remember which user has logged in
         session["user_id"] = user_id
@@ -482,8 +523,11 @@ def sell():
     QUOTED = lookup(symbol)
 
     # Check if user has enough shares to sell as requested
-    shares_count = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
-                              user_id, symbol)[0]["shares_count"]
+    shares_count = db.execute(
+        "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
+        user_id,
+        symbol,
+    )[0]["shares_count"]
     if shares > shares_count:
         return apology("not enough shares owned", 400)
 
@@ -500,22 +544,37 @@ def sell():
     # Insert sell log into history table
     db.execute(
         "INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS'))",
-        user_id, symbol, -(shares), price)
+        user_id,
+        symbol,
+        -(shares),
+        price,
+    )
 
     # Keep track of shares in shares table
-    current_shares = db.execute("SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
-                                user_id, symbol)[0]["shares_count"]
+    current_shares = db.execute(
+        "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
+        user_id,
+        symbol,
+    )[0]["shares_count"]
     new_shares_total = current_shares - shares
 
     # If 0 shares left of the stock owned
     if new_shares_total == 0:
-        db.execute("DELETE FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol)
+        db.execute(
+            "DELETE FROM shares WHERE user_id = ? AND symbol = ?", user_id, symbol
+        )
 
     # User still owns shares of the stock
     else:
         shares_value_total = new_shares_total * price
-        db.execute("UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-                   new_shares_total, price, shares_value_total, user_id, symbol)
+        db.execute(
+            "UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
+            new_shares_total,
+            price,
+            shares_value_total,
+            user_id,
+            symbol,
+        )
 
     # Return success status
     return jsonify(True)
@@ -540,7 +599,9 @@ def sell_json():
 
     # filter symbol results based on symbol query
     # Use list comprehension with if condition to filter by symbol query
-    filtered_shares = [data for data in shares if symbol_query.upper() in data["symbol"]]
+    filtered_shares = [
+        data for data in shares if symbol_query.upper() in data["symbol"]
+    ]
 
     return jsonify({"symbols": filtered_shares})
 
@@ -606,7 +667,11 @@ def password():
     # Correct old password
     else:
         # Update user's password in database
-        db.execute("UPDATE users SET hash = ? WHERE id = ?", generate_password_hash(new_password), user_id)
+        db.execute(
+            "UPDATE users SET hash = ? WHERE id = ?",
+            generate_password_hash(new_password),
+            user_id,
+        )
 
         # Return success status
         return jsonify(True)
