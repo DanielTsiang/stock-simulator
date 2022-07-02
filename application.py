@@ -86,13 +86,13 @@ def index_json():
     # Access user's id
     user_id = session["user_id"]
 
-    # Select information from shares table for logged in user
+    # Select information from shares table for logged-in user
     SHARES = db.execute("SELECT * FROM shares WHERE user_id = ?", user_id)
 
     # List comprehension to convert list of dicts into list of symbols
     symbols_owned = [share["symbol"] for share in SHARES]
 
-    # Obtain latest share price(s) from API and update database
+    # Obtain the latest share price(s) from API and update database
     QUOTED = lookup(symbols_owned)
 
     for share in SHARES:
@@ -188,28 +188,12 @@ def buy():
         price,
     )
 
-    # Keep track of shares in shares table
-    current_shares = db.execute(
+    if current_shares := db.execute(
         "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
         user_id,
         symbol,
-    )
-
-    # If shares have not been bought before
-    if not current_shares:
-        name = QUOTED[symbol]["quote"]["companyName"]
-        db.execute(
-            "INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)",
-            user_id,
-            symbol,
-            name,
-            shares,
-            price,
-            cost,
-        )
-
-    # If shares have been bought before
-    else:
+    ):
+        # Shares have been bought before
         new_shares_total = current_shares[0]["shares_count"] + shares
         shares_value_total = new_shares_total * price
         db.execute(
@@ -219,6 +203,19 @@ def buy():
             shares_value_total,
             user_id,
             symbol,
+        )
+
+    else:
+        # Shares have not been bought before
+        name = QUOTED[symbol]["quote"]["companyName"]
+        db.execute(
+            "INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)",
+            user_id,
+            symbol,
+            name,
+            shares,
+            price,
+            cost,
         )
 
     # Return success status
@@ -248,12 +245,8 @@ def buyCheck():
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
     price = float(QUOTED[symbol]["quote"]["latestPrice"])
     cost = price * shares
-    if cash < cost:
-        # User does not have enough cash to buy shares
-        return jsonify(False)
-    else:
-        # User has enough cash to buy shares
-        return jsonify(True)
+    # Return False if user does not have enough cash to buy shares, otherwise return True
+    return jsonify(False) if cash < cost else jsonify(True)
 
 
 @app.route("/history", methods=["GET", "DELETE"])
@@ -283,7 +276,7 @@ def history_json():
     # Access user's id
     user_id = session["user_id"]
 
-    # Obtain history information for logged in user
+    # Obtain history information for logged-in user
     transactions = db.execute(
         "SELECT * FROM history WHERE user_id = ? ORDER BY transacted DESC", user_id
     )
@@ -382,13 +375,8 @@ def symbolCheck():
     else:
         symbol = request.args.get("symbol_sell").upper()
 
-    # Valid IEX symbol
-    if symbol in symbols_list:
-        return jsonify(True)
-
-    # Invalid IEX symbol
-    else:
-        return jsonify(False)
+    # Return True if valid IEX symbol, otherwise return False
+    return jsonify(True) if symbol in symbols_list else jsonify(False)
 
 
 @app.route("/sellCheck", methods=["GET"])
@@ -409,20 +397,15 @@ def sharesCheck():
     # Access form data for shares quantity
     shares = int(request.args.get("shares_sell"))
 
-    # Select information from shares table for logged in user
+    # Select information from shares table for logged-in user
     shares_count = db.execute(
         "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
         user_id,
         symbol,
     )[0]["shares_count"]
 
-    # Invalid shares quantity
-    if shares > shares_count:
-        return jsonify(False)
-
-    # Valid shares quantity
-    else:
-        return jsonify(True)
+    # Return False if invalid shares quantity, otherwise return True
+    return jsonify(False) if shares > shares_count else jsonify(True)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -455,12 +438,12 @@ def register():
     elif password != confirmation:
         return apology("passwords do not match", 400)
 
-    # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-
-    # Username does not already exist
-    if not rows:
-
+    if db.execute("SELECT * FROM users WHERE username = ?", username):
+        # Username already exists
+        flash("Username is already taken", "danger")
+        return render_template("register.html")
+    else:
+        # Username does not already exist
         # Insert data into database
         user_id = db.execute(
             "INSERT INTO users (username, hash) VALUES (?, ?)",
@@ -474,11 +457,6 @@ def register():
         # Redirect user to home page
         return redirect("/")
 
-    # Username already exists
-    else:
-        flash("Username is already taken", "danger")
-        return render_template("register.html")
-
 
 @app.route("/usernameCheck", methods=["GET"])
 def usernameCheck():
@@ -490,13 +468,8 @@ def usernameCheck():
     # Query database for username
     rows = db.execute("SELECT * FROM users WHERE username = ?", username)
 
-    # Username does not already exist
-    if not rows:
-        return jsonify(True)
-
-    # Username already exists
-    else:
-        return jsonify(False)
+    # Return False if username already exists, otherwise return True
+    return jsonify(False) if rows else jsonify(True)
 
 
 @app.route("/sell", methods=["PUT"])
@@ -590,7 +563,7 @@ def sell_json():
 
     symbol_query = request.args.get("q", "")
 
-    # Select share symbols from shares table for logged in user
+    # Select share symbols from shares table for logged-in user
     shares = db.execute("SELECT symbol FROM shares WHERE user_id = ?", user_id)
 
     # if no symbol query provided
@@ -691,13 +664,12 @@ def passwordCheck():
     # Query database for username
     rows = db.execute("SELECT * FROM users WHERE id = ?", user_id)
 
-    # Ensure old password is correct
-    if not check_password_hash(rows[0]["hash"], old_password):
-        return jsonify(False)
-
-    # Correct old password
-    else:
-        return jsonify(True)
+    # Return True if submitted old password is correct, otherwise return False
+    return (
+        jsonify(True)
+        if check_password_hash(rows[0]["hash"], old_password)
+        else jsonify(False)
+    )
 
 
 @app.route("/cash", methods=["PUT"])
