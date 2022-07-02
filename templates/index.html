@@ -1,30 +1,30 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	Portfolio
+    Portfolio
 {% endblock %}
 
 {% block header %}
-	<div id="buy-alert" class="alert alert-info alert-dismissible collapse mx-auto text-center w-75" role="alert">
-		Bought!
-		<button type="button" class="close" data-hide="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
+    <div id="buy-alert" class="alert alert-info alert-dismissible collapse mx-auto text-center w-75" role="alert">
+        Bought!
+        <button type="button" class="close" data-hide="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-	<div id="sell-alert" class="alert alert-success alert-dismissible collapse mx-auto text-center w-75" role="alert">
-		Sold!
-		<button type="button" class="close" data-hide="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
+    <div id="sell-alert" class="alert alert-success alert-dismissible collapse mx-auto text-center w-75" role="alert">
+        Sold!
+        <button type="button" class="close" data-hide="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-	<div id="cash-alert" class="alert alert-warning alert-dismissible collapse mx-auto text-center w-75" role="alert">
-		Cash updated!
-		<button type="button" class="close" data-hide="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
+    <div id="cash-alert" class="alert alert-warning alert-dismissible collapse mx-auto text-center w-75" role="alert">
+        Cash updated!
+        <button type="button" class="close" data-hide="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 {% endblock %}
 
 {% block main %}
@@ -35,52 +35,52 @@
         <button type="button" class="btn btn-lg  btn-outline-success" data-toggle="modal" data-target="#sellModal">Sell</button>
     </div>
 
-	<div class="table-responsive">
-		<table class="table table-hover" style="width:100%" id="shares">
-		    <caption>Portfolio</caption>
-			<thead>
-				<tr>
-					<th scope="col">Symbol</th>
-					<th scope="col">Name</th>
-					<th scope="col">Shares Owned</th>
-					<th scope="col">Latest Price</th>
-					<th scope="col">Total</th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr class="table-secondary">
-					<td colspan="1">
-						CASH &nbsp;
-						<!-- Button trigger modal -->
-						<button type="button" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#cashModal">
-							<i class="fas fa-money-check-alt"></i>
-						</button>
-					</td>
-					<td colspan="3"></td>
-					<td id="cash"></td>
-				</tr>
-				<tr class="bold">
-					<td colspan="4"></td>
-					<td id="total"></td>
-				</tr>
-			</tfoot>
-			<tbody>
-			</tbody>
-		</table>
-	</div>
+    <div class="table-responsive">
+        <table class="table table-hover" style="width:100%" id="shares">
+            <caption>Portfolio</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Shares Owned</th>
+                    <th scope="col">Latest Price</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr class="table-secondary">
+                    <td colspan="1">
+                        CASH &nbsp;
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#cashModal">
+                            <i class="fas fa-money-check-alt"></i>
+                        </button>
+                    </td>
+                    <td colspan="3"></td>
+                    <td id="cash"></td>
+                </tr>
+                <tr class="bold">
+                    <td colspan="4"></td>
+                    <td id="total"></td>
+                </tr>
+            </tfoot>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
-	<!-- Quote modal -->
-	<div class="modal fade" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="quoteModalTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="form">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="quoteModalLongTitle">Stock Quote</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-				    <form name="quote" id="quote-form">
+    <!-- Quote modal -->
+    <div class="modal fade" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="quoteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quoteModalLongTitle">Stock Quote</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="quote" id="quote-form">
                         <div class="form-group">
                             <label for="symbol-quote" class="d-block">Enter a valid symbol:</label>
                             <select id="symbol-quote" class="select2-form select2-placeholder" name="symbol_quote" class="form-control" placeholder="Symbol" required autofocus autocomplete="off"></select>
@@ -88,104 +88,104 @@
                         <button class="btn btn-primary mb-4" type="submit">Quote</button>
                     </form>
                     <p id="quoted"></p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Buy modal -->
-	<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="form">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="buyModalLongTitle">Buy Stock</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<form name="buy">
-				    <div class="modal-body">
+    <!-- Buy modal -->
+    <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buyModalLongTitle">Buy Stock</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="buy">
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="symbol-buy" class="d-block">Enter a valid symbol:</label>
-         					<select id="symbol-buy" class="form-control select2-form select2-placeholder w-50" name="symbol_buy" placeholder="Symbol" required autofocus autocomplete="off"></select>
+                             <select id="symbol-buy" class="form-control select2-form select2-placeholder w-50" name="symbol_buy" placeholder="Symbol" required autofocus autocomplete="off"></select>
                         </div>
                         <div class="form-group">
                             <input class="form-control w-50 autonumeric" autocomplete="off" name="shares_buy" id="shares-buy" placeholder="Shares" type="text" inputmode="decimal" required>
                         </div>
-				    </div>
-    				<div class="modal-footer">
-    					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    					<button type="submit" class="btn btn-primary">Buy</button>
-    				</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Buy</button>
+                    </div>
                 </form>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Sell modal -->
-	<div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="sellModalTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="form">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="sellModalLongtitle">Sell Stock</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<form name="sell">
-				    <div class="modal-body">
+    <!-- Sell modal -->
+    <div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="sellModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sellModalLongtitle">Sell Stock</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="sell">
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="symbol-sell" class="d-block">Enter a valid symbol:</label>
-         					<select id="symbol-sell" class="form-control select2-placeholder w-50" name="symbol_sell" placeholder="Symbol" required autofocus autocomplete="off"></select>
+                             <select id="symbol-sell" class="form-control select2-placeholder w-50" name="symbol_sell" placeholder="Symbol" required autofocus autocomplete="off"></select>
                         </div>
                         <div class="form-group">
                             <input autocomplete="off" class="form-control w-50" name="shares_sell" id="shares-sell" placeholder="Shares" type="text" inputmode="decimal" required>
                         </div>
-				    </div>
-    				<div class="modal-footer">
-    					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    					<button type="submit" class="btn btn-primary">Sell</button>
-    				</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Sell</button>
+                    </div>
                 </form>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Cash modal -->
-	<div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="cashModalTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="form">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="cashModalLongtitle">Update Cash</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<form name="cash" id="cash-form">
-				    <div class="modal-body">
+    <!-- Cash modal -->
+    <div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="cashModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cashModalLongtitle">Update Cash</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="cash" id="cash-form">
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="cash" class="d-block">Update cash amount:</label>
-					        <div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">&#36;</span>
-								</div>
-								<input class="form-control" name="cash" id="cash-input" placeholder="Cash" type="text" inputmode="decimal" required autofocus autocomplete="off">
-							</div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">&#36;</span>
+                                </div>
+                                <input class="form-control" name="cash" id="cash-input" placeholder="Cash" type="text" inputmode="decimal" required autofocus autocomplete="off">
+                            </div>
                         </div>
-				    </div>
-    				<div class="modal-footer">
-    					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    					<button type="submit" class="btn btn-primary">Update Cash</button>
-    				</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Cash</button>
+                    </div>
                 </form>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
-	<!-- below jQuery with AJAX code loads datatable, validates the forms, checks for valid stock symbols, and handles updates to datatables -->
-	<script src="/static/index.js"></script>
+    <!-- below jQuery with AJAX code loads datatable, validates the forms, checks for valid stock symbols, and handles updates to datatables -->
+    <script src="/static/index.js"></script>
 
 {% endblock %}
