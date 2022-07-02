@@ -100,9 +100,7 @@ def index_json():
         new_shares_total = share["shares_count"] * float(
             QUOTED[share["symbol"]]["quote"]["latestPrice"]
         )
-        db.execute(
-            "UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-            price,
+        db.execute("UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?", price,
             new_shares_total,
             user_id,
             share["symbol"],
