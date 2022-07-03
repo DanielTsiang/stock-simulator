@@ -245,8 +245,8 @@ def buyCheck():
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
     price = float(QUOTED[symbol]["quote"]["latestPrice"])
     cost = price * shares
-    # Return False if user does not have enough cash to buy shares, otherwise return True
-    return jsonify(False) if cash < cost else jsonify(True)
+    # Return True if user has enough cash to buy shares, otherwise return False
+    return jsonify(True) if cash >= cost else jsonify(False)
 
 
 @app.route("/history", methods=["GET", "DELETE"])
@@ -404,8 +404,8 @@ def sharesCheck():
         symbol,
     )[0]["shares_count"]
 
-    # Return False if invalid shares quantity, otherwise return True
-    return jsonify(False) if shares > shares_count else jsonify(True)
+    # Return True if valid shares quantity, otherwise return False
+    return jsonify(True) if shares <= shares_count else jsonify(False)
 
 
 @app.route("/register", methods=["GET", "POST"])
