@@ -36,21 +36,19 @@ LOOKUP_RETURN = {
 
 def setUp():
     # Set up test database
-    if os.path.exists("test.db"):
-        os.remove("test.db")
-    # shutil.copy("simulator.backup.db", "test.db")
-    test_db = sqlite3.connect("test.db")
-    source_db = sqlite3.connect("simulator.backup.db")
+    if os.path.exists("tests/test.db"):
+        os.remove("tests/test.db")
+    test_db = sqlite3.connect("tests/test.db")
+    source_db = sqlite3.connect("tests/simulator.backup.db")
     source_db.backup(test_db)
 
     # Set up environment variables
-    # env_patcher = mock.patch.dict("os.environ",
-    #                               {"DATABASE_URL": "postgresql://test.db", "API_KEY": "123456"})
     env_patcher = mock.patch.dict(
-        "os.environ", {"DATABASE_URL": "sqlite:///test.db", "API_KEY": "123456"}
+        "os.environ", {"DATABASE_URL": "sqlite:///tests/test.db", "API_KEY": "123456"}
     )
     env_patcher.start()
     return env_patcher
+
 
 env_patcher = setUp()
 from application import app, db
@@ -110,8 +108,8 @@ class ApplicationTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         super().tearDownClass()
-        if os.path.exists("test.db"):
-            os.remove("test.db")
+        if os.path.exists("tests/test.db"):
+            os.remove("tests/test.db")
         env_patcher.stop()
 
     def test_get_login(self):

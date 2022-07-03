@@ -14,10 +14,23 @@ A RESTful web app that simulates managing portfolios of stocks, using real stock
 1. Visit the web application [here](https://stock-simulator-dt.herokuapp.com/).
 2. Register for an account!
 
-### Running locally
-```bash
-pip3 install -r requirements.txt
-gunicorn application:app --preload
+### Running locally with Python
+1. Export the following environment variables necessary to run the app, e.g. on MacOS/Linux:
+```
+export DATABASE_URL=<PostgreSQL database URL>
+export API_KEY=<IEX Cloud API Key>
+```
+2. In the root folder where `requirements.txt` is contained, run `pip3 install -r requirements.txt` in the terminal to install the requirements for this project.
+3. To start the app, in the root folder, run the following command in the terminal:
+`gunicorn application:app --preload`
+4. Visit `localhost:8000` in your web browser.
+5. To shut down the app, in the terminal hit `CTRL+C`.
+
+### Testing
+In the root folder, run the following commands in the terminal to install the requirements and then run the unit tests:
+```
+pip3 install -r requirements.txt -r requirements_test.txt
+python3 -m unittest discover -s ./tests -p "test*.py"
 ```
 
 ### Video Demo
