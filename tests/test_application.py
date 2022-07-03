@@ -36,15 +36,17 @@ LOOKUP_RETURN = {
 
 def setUp():
     # Set up test database
-    if os.path.exists("tests/test.db"):
-        os.remove("tests/test.db")
-    test_db = sqlite3.connect("tests/test.db")
-    source_db = sqlite3.connect("tests/simulator.backup.db")
+    base_path = Path(__file__).parent
+    test_db_path = os.path.join(base_path, "test.db")
+    if os.path.exists(test_db_path):
+        os.remove(test_db_path)
+    test_db = sqlite3.connect(test_db_path)
+    source_db = sqlite3.connect(os.path.join(base_path, "simulator.backup.db"))
     source_db.backup(test_db)
 
     # Set up environment variables
     env_patcher = mock.patch.dict(
-        "os.environ", {"DATABASE_URL": "sqlite:///tests/test.db", "API_KEY": "123456"}
+        "os.environ", {"DATABASE_URL": f"sqlite:///{test_db_path}", "API_KEY": "123456"}
     )
     env_patcher.start()
     return env_patcher
@@ -108,8 +110,10 @@ class ApplicationTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         super().tearDownClass()
-        if os.path.exists("tests/test.db"):
-            os.remove("tests/test.db")
+        base_path = Path(__file__).parent
+        test_db_path = os.path.join(base_path, "test.db")
+        if os.path.exists(test_db_path):
+            os.remove(test_db_path)
         env_patcher.stop()
 
     def test_get_login(self):
@@ -258,6 +262,23 @@ class ApplicationTest(unittest.TestCase):
             with test_client.session_transaction() as session:
                 session["user_id"] = USER_ID
             response = test_client.put("/buy", data=payload)
+
+        # THEN
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertEqual(True, response.json)
+
+    @mock.patch("application.lookup")
+    def test_get_buy_check(self, mock_lookup):
+        # GIVEN
+        payload = {"symbol_buy": SYMBOL1, "shares_buy": 1}
+        mock_lookup.return_value = LOOKUP_RETURN
+
+        # WHEN
+        with app.test_client() as test_client:
+            # Mock user logged in
+            with test_client.session_transaction() as session:
+                session["user_id"] = USER_ID
+            response = test_client.get("/buyCheck", query_string=payload)
 
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)
