@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
 echo "======= Running unit tests ======="
-docker exec stock-simulator python3 -m unittest discover -s ./tests -p "test*"
+docker run --rm \
+    --entrypoint python3 \
+    -v $PWD/tests:/tests \
+    stock-simulator:latest \
+    -m unittest discover \
+    -s ./tests \
+    -p "test*.py"
