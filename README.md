@@ -33,6 +33,22 @@ pip3 install -r requirements.txt -r requirements_test.txt
 python3 -m unittest discover -s ./tests -p "test*.py"
 ```
 
+### Running locally with Docker
+1. Ensure you have Docker installed.
+2. To build the Docker image, in the root folder where `application.py` is contained, run the following command in the terminal:
+`sh docker/docker-build.sh`
+3. Export the following environment variables necessary to run the app, e.g. on MacOS/Linux:
+```
+export DATABASE_URL=<PostgreSQL database URL>
+export API_KEY=<IEX Cloud API Key>
+```
+4. To run the Docker container, in the root folder, run the following command in the terminal:
+`sh docker/docker-run.sh`
+5. Visit `localhost:8000` in your web browser.
+6. To run the unit tests with Docker, while the Docker contain is running, open a new terminal and run the following command:
+`sh docker/docker-test.sh`
+7. To shut down the app, in the terminal hit `CTRL+C`.
+
 ### Video Demo
 https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-9abf-597f02b1aa52.mp4
 
