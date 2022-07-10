@@ -1,12 +1,19 @@
 from http import HTTPStatus
 from pathlib import Path
+from werkzeug.security import check_password_hash
 import sys
 import unittest
 
 # Append root directory to list of searched paths
 sys.path.append(str(Path(__file__).parents[1]))
 
-from tests.application_test_base import ApplicationTestBase, app, captured_templates
+from tests.application_test_base import (
+    ApplicationTestBase,
+    TEST1,
+    app,
+    captured_templates,
+    db,
+)
 
 
 class LoginTest(ApplicationTestBase):
@@ -21,6 +28,21 @@ class LoginTest(ApplicationTestBase):
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertEqual("login.html", template.name)
+
+    def test_post_login(self):
+        # GIVEN
+        payload = {"username": TEST1, "password": TEST1}
+
+        # WHEN
+        with app.test_client() as test_client:
+            response = test_client.post("/login", data=payload)
+        rows = db.execute("SELECT * FROM users WHERE username = ?", TEST1)
+
+        # THEN
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)
+        self.assertEqual("/", response.location)
+        self.assertEqual(1, len(rows))
+        self.assertTrue(check_password_hash(rows[0]["hash"], TEST1))
 
     def test_get_logout(self):
         # WHEN
