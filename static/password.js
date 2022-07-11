@@ -34,7 +34,7 @@ $(function() {
             old_password: {
                 required: true,
                 remote: {
-                    url: "/passwordCheck",
+                    url: "/password_check",
                     type: "POST",
                     beforeSend: function() {
                         $("#old-password").addClass("loading");

@@ -8,6 +8,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 
 from tests.application_test_base import (
     ApplicationTestBase,
+    TEST1,
     TEST2,
     app,
     captured_templates,
@@ -42,6 +43,18 @@ class RegisterTest(ApplicationTestBase):
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
         self.assertEqual("/", response.location)
         self.assertEqual(TEST2, username)
+
+    def test_get_username_check(self):
+        # GIVEN
+        payload = {"username": TEST1}
+
+        # WHEN
+        with app.test_client() as test_client:
+            response = test_client.get("/username_check", query_string=payload)
+
+        # THEN
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertEqual(False, response.json)
 
 
 if __name__ == "__main__":

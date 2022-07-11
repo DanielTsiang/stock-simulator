@@ -63,9 +63,9 @@ def password():
         return jsonify(True)
 
 
-@password_blueprint.route("/passwordCheck", methods=["POST"])
+@password_blueprint.route("/password_check", methods=["POST"])
 @login_required
-def passwordCheck():
+def password_check():
     """Check if user entered correct old password"""
 
     # Access user's id

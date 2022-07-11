@@ -55,7 +55,7 @@ class BuyTest(ApplicationTestBase):
             # Mock user logged in
             with test_client.session_transaction() as session:
                 session["user_id"] = USER_ID2
-            response = test_client.get("/buyCheck", query_string=payload)
+            response = test_client.get("/buy_check", query_string=payload)
 
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)

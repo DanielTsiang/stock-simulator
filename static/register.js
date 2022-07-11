@@ -40,7 +40,7 @@ $(function() {
             username: {
                 required: true,
                 remote: {
-                    url: "/usernameCheck",
+                    url: "/username_check",
                     type: "GET",
                     beforeSend: function() {
                         $("#username").addClass("loading");

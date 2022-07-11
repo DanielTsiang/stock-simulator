@@ -58,8 +58,8 @@ def register():
         return redirect("/")
 
 
-@register_blueprint.route("/usernameCheck")
-def usernameCheck():
+@register_blueprint.route("/username_check")
+def username_check():
     """Check if username already exists"""
 
     # Access form data

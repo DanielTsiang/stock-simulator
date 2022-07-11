@@ -32,26 +32,23 @@ def select_json():
     return jsonify({"symbols": filtered_symbols_only_data})
 
 
-@symbols_blueprint.route("/symbolCheck")
+@symbols_blueprint.route("/symbol_check")
 @login_required
-def symbolCheck():
+def symbol_check():
     """Check if eligible symbol entered"""
 
     # Access form data
-    if request.args.get("symbol_quote"):
-        symbol = request.args.get("symbol_quote").upper()
-    elif request.args.get("symbol_buy"):
-        symbol = request.args.get("symbol_buy").upper()
-    else:
-        symbol = request.args.get("symbol_sell").upper()
+    for check in ["quote", "buy", "sell"]:
+        if data := request.args.get(f"symbol_{check}"):
+            symbol = data.upper()
 
     # Return True if valid IEX symbol, otherwise return False
     return jsonify(True) if symbol in symbols_list else jsonify(False)
 
 
-@symbols_blueprint.route("/eligibleSymbols")
+@symbols_blueprint.route("/eligible_symbols")
 @login_required
-def eligibleSymbols():
+def eligible_symbols():
     """Render table of eligible symbols"""
 
     return render_template("symbols.html")

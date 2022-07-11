@@ -159,7 +159,7 @@ $(function() {
                 required: true,
                 symbol_check: true,
                 remote: {
-                    url: "/symbolCheck",
+                    url: "/symbol_check",
                     type: "GET"
                 }
             },
@@ -221,14 +221,14 @@ $(function() {
                 required: true,
                 symbol_check: true,
                 remote: {
-                    url: "/symbolCheck",
+                    url: "/symbol_check",
                     type: "GET"
                 }
             },
             shares_buy: {
                 required: true,
                 remote: {
-                    url: "/buyCheck",
+                    url: "/buy_check",
                     type: "GET",
                     beforeSend: function() {
                         $("#shares-buy").addClass("loading");
@@ -307,14 +307,14 @@ $(function() {
                 required: true,
                 symbol_check: true,
                 remote: {
-                    url: "/symbolCheck",
+                    url: "/symbol_check",
                     type: "GET"
                 }
             },
             shares_sell: {
                 required: true,
                 remote: {
-                    url: "/sellCheck",
+                    url: "/sell_check",
                     type: "GET",
                     beforeSend: function() {
                         $("#shares-sell").addClass("loading");

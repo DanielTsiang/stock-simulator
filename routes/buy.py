@@ -92,9 +92,9 @@ def buy():
     return jsonify(True)
 
 
-@buy_blueprint.route("/buyCheck")
+@buy_blueprint.route("/buy_check")
 @login_required
-def buyCheck():
+def buy_check():
     """Check if user has enough cash to buy requested amount of shares"""
 
     # Access user's id

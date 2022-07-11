@@ -89,7 +89,7 @@ def sell():
     return jsonify(True)
 
 
-@sell_blueprint.route("/sellCheck")
+@sell_blueprint.route("/sell_check")
 @login_required
 def sharesCheck():
     """Check if valid shares quantity entered"""
