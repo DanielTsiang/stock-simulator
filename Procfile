@@ -1,1 +1,1 @@
-web: gunicorn application:app --preload
+web:  gunicorn --log-config logging.conf application:app --preload

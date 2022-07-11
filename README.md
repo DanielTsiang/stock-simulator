@@ -57,7 +57,7 @@ export API_KEY=<IEX Cloud API Key>
 ```
 2. In the root folder where `requirements.txt` is contained, run `pip3 install -r requirements.txt` in the terminal to install the requirements for this project.
 3. To start the app, in the root folder, run the following command in the terminal:
-`gunicorn application:app --preload`
+` gunicorn --log-config logging.conf application:app --preload`
 4. Visit `localhost:8000` in your web browser.
 5. To shut down the app, in the terminal hit `CTRL+C`.
 
