@@ -27,6 +27,7 @@ from routes.login import login_blueprint
 from routes.password import password_blueprint
 from routes.quote import quote_blueprint
 from routes.register import register_blueprint
+from routes.sell import sell_blueprint
 from routes.symbols import symbols_blueprint
 
 
@@ -42,6 +43,7 @@ app.register_blueprint(login_blueprint)
 app.register_blueprint(password_blueprint)
 app.register_blueprint(quote_blueprint)
 app.register_blueprint(register_blueprint)
+app.register_blueprint(sell_blueprint)
 app.register_blueprint(symbols_blueprint)
 
 # Ensure templates are auto-reloaded

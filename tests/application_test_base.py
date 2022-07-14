@@ -14,10 +14,11 @@ sys.path.append(str(Path(__file__).parents[1]))
 # Config
 DEFAULT_CASH = 10000
 HISTORY_ID = 93
-NAME1 = "Alphabet Inc"
+NAME = "Alphabet Inc"
+NEW_CASH = 8888
 NEW_PRICE = 2174.53
 PRICE = 2129.78
-SYMBOL1 = "GOOGL"
+SYMBOL = "GOOGL"
 TEST1 = "test1"
 TEST2 = "test2"
 USER_ID1 = 1
@@ -26,8 +27,8 @@ USER_ID2 = 2
 LOOKUP_RETURN = {
     "GOOGL": {
         "quote": {
-            "symbol": SYMBOL1,
-            "companyName": NAME1,
+            "symbol": SYMBOL,
+            "companyName": NAME,
             "latestPrice": NEW_PRICE,
         }
     }
@@ -90,7 +91,7 @@ class ApplicationTestBase(unittest.TestCase):
         db.execute(
             "INSERT INTO history (user_id, symbol, shares, price, transacted) VALUES (?, ?, ?, ?, datetime('now'))",
             USER_ID2,
-            SYMBOL1,
+            SYMBOL,
             1,
             PRICE,
         )
@@ -98,15 +99,15 @@ class ApplicationTestBase(unittest.TestCase):
             "UPDATE history SET id = ? WHERE user_id = ? AND symbol = ? AND transacted = datetime('now')",
             HISTORY_ID,
             USER_ID2,
-            SYMBOL1,
+            SYMBOL,
         )
 
         # Insert share into shares table
         db.execute(
             "INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)",
             USER_ID2,
-            SYMBOL1,
-            NAME1,
+            SYMBOL,
+            NAME,
             1,
             PRICE,
             PRICE,

@@ -10,10 +10,10 @@ sys.path.append(str(Path(__file__).parents[1]))
 from tests.application_test_base import (
     ApplicationTestBase,
     DEFAULT_CASH,
-    NAME1,
+    NAME,
     NEW_PRICE,
     LOOKUP_RETURN,
-    SYMBOL1,
+    SYMBOL,
     USER_ID2,
     app,
     captured_templates,
@@ -46,10 +46,10 @@ class IndexTest(ApplicationTestBase):
             "cash_data": DEFAULT_CASH,
             "shares_data": [
                 {
-                    "name": NAME1,
+                    "name": NAME,
                     "price": NEW_PRICE,
                     "shares_count": 1,
-                    "symbol": SYMBOL1,
+                    "symbol": SYMBOL,
                     "total": NEW_PRICE,
                     "user_id": USER_ID2,
                 }
@@ -59,8 +59,8 @@ class IndexTest(ApplicationTestBase):
         expected_shares = [
             {
                 "user_id": USER_ID2,
-                "symbol": SYMBOL1,
-                "name": NAME1,
+                "symbol": SYMBOL,
+                "name": NAME,
                 "shares_count": 1,
                 "price": NEW_PRICE,
                 "total": NEW_PRICE,
@@ -75,7 +75,7 @@ class IndexTest(ApplicationTestBase):
             response = test_client.get("/index_json")
 
         updated_shares = db.execute(
-            "SELECT * FROM shares WHERE user_id = ? AND symbol = ?", USER_ID2, SYMBOL1
+            "SELECT * FROM shares WHERE user_id = ? AND symbol = ?", USER_ID2, SYMBOL
         )
 
         # THEN

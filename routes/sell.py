@@ -31,12 +31,12 @@ def sell():
     QUOTED = lookup(symbol)
 
     # Check if user has enough shares to sell as requested
-    shares_count = db.execute(
+    current_shares = db.execute(
         "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
         user_id,
         symbol,
     )[0]["shares_count"]
-    if shares > shares_count:
+    if shares > current_shares:
         return apology("not enough shares owned", 400)
 
     # User has enough shares to sell as requested
@@ -60,11 +60,6 @@ def sell():
     )
 
     # Keep track of shares in shares table
-    current_shares = db.execute(
-        "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
-        user_id,
-        symbol,
-    )[0]["shares_count"]
     new_shares_total = current_shares - shares
 
     # If 0 shares left of the stock owned
@@ -91,7 +86,7 @@ def sell():
 
 @sell_blueprint.route("/sell_check")
 @login_required
-def sharesCheck():
+def sell_check():
     """Check if valid shares quantity entered"""
 
     # Access user's id
@@ -108,14 +103,14 @@ def sharesCheck():
     shares = int(request.args.get("shares_sell"))
 
     # Select information from shares table for logged-in user
-    shares_count = db.execute(
+    current_shares = db.execute(
         "SELECT shares_count FROM shares WHERE user_id = ? AND symbol = ?",
         user_id,
         symbol,
     )[0]["shares_count"]
 
     # Return True if valid shares quantity, otherwise return False
-    return jsonify(True) if shares <= shares_count else jsonify(False)
+    return jsonify(True) if shares <= current_shares else jsonify(False)
 
 
 @sell_blueprint.route("/sell_json")

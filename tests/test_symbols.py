@@ -11,7 +11,7 @@ from routes.symbols import symbols_data
 
 from tests.application_test_base import (
     ApplicationTestBase,
-    SYMBOL1,
+    SYMBOL,
     USER_ID2,
     app,
     captured_templates,
@@ -36,7 +36,7 @@ class SymbolsTest(ApplicationTestBase):
 
     def test_get_symbol_check(self):
         # GIVEN
-        payload = {"symbol_quote": SYMBOL1}
+        payload = {"symbol_quote": SYMBOL}
 
         # WHEN
         with app.test_client() as test_client:
