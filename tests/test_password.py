@@ -17,8 +17,6 @@ from tests.application_test_base import (
     db,
 )
 
-import utils
-
 
 class PasswordTest(ApplicationTestBase):
     def test_get_password(self):

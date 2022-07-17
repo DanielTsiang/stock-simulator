@@ -2,6 +2,7 @@ from contextlib import contextmanager
 from flask import template_rendered
 from pathlib import Path
 from unittest import mock
+import logging
 import sqlite3
 import sys
 import os
@@ -11,8 +12,12 @@ import unittest
 # Append root directory to list of searched paths
 sys.path.append(str(Path(__file__).parents[1]))
 
+# Disable requests library debug logging
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+
 # Config
-DEFAULT_CASH = 10000
+DEFAULT_CASH = 10000.00
 HISTORY_ID = 93
 NAME = "Alphabet Inc"
 NEW_CASH = 8888

@@ -9,17 +9,30 @@ from datetime import datetime
 
 def apology(message, code=400):
     """Render message as an apology to user."""
+
     def escape(s):
         """
         Escape special characters.
 
         https://github.com/jacebrowning/memegen#special-characters
         """
-        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+        for old, new in [
+            ("-", "--"),
+            (" ", "-"),
+            ("_", "__"),
+            ("?", "~q"),
+            ("%", "~p"),
+            ("#", "~h"),
+            ("/", "~s"),
+            ('"', "''"),
+        ]:
             s = s.replace(old, new)
         return s
-    return render_template("apology.html", top=f"{code} error", bottom=escape(message)), code
+
+    return (
+        render_template("apology.html", top=f"{code} error", bottom=escape(message)),
+        code,
+    )
 
 
 def login_required(f):
@@ -28,11 +41,13 @@ def login_required(f):
 
     https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
             return redirect("/login")
         return f(*args, **kwargs)
+
     return decorated_function
 
 
@@ -73,10 +88,16 @@ def all_symbols():
     try:
         symbols_data = response.json()
         # Use dict comprehension inisde a list comprehension to remove unwanted key value pairs from list of dictionaries
-        symbols_data_stripped = [{key: value for key, value in data.items() if key in ["Symbol", "Issuer"]} for data in symbols_data]
+        symbols_data_stripped = [
+            {key: value for key, value in data.items() if key in ["Symbol", "Issuer"]}
+            for data in symbols_data
+        ]
 
         # Use dict compresion inside a list comprehension to remove unwanted key value pairs from list of dictionaries
-        symbols_only_data = [{key: value for key, value in data.items() if key == "Symbol"} for data in symbols_data]
+        symbols_only_data = [
+            {key: value for key, value in data.items() if key == "Symbol"}
+            for data in symbols_data
+        ]
 
         # List comprehension to convert list of dicts into list of "Symbols"
         symbols_list = [symbol["Symbol"] for symbol in symbols_data]
