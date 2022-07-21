@@ -33,7 +33,8 @@ def login():
         return apology("must provide password", 400)
 
     # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+    lower_case_username = username.lower()
+    rows = db.execute("SELECT * FROM users WHERE username = ?", lower_case_username)
 
     # Ensure username exists and password is correct
     if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):

@@ -38,7 +38,8 @@ def register():
     elif password != confirmation:
         return apology("passwords do not match", 400)
 
-    if db.execute("SELECT * FROM users WHERE username = ?", username):
+    lower_case_username = username.lower()
+    if db.execute("SELECT * FROM users WHERE username = ?", lower_case_username):
         # Username already exists
         flash("Username is already taken", "danger")
         return render_template("register.html")
@@ -47,7 +48,7 @@ def register():
         # Insert data into database
         user_id = db.execute(
             "INSERT INTO users (username, hash) VALUES (?, ?)",
-            username,
+            lower_case_username,
             generate_password_hash(password),
         )
 
@@ -64,9 +65,10 @@ def username_check():
 
     # Access form data
     username = request.args.get("username")
+    lower_case_username = username.lower()
 
     # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+    rows = db.execute("SELECT * FROM users WHERE username = ?", lower_case_username)
 
     # Return False if username already exists, otherwise return True
     return jsonify(False) if rows else jsonify(True)
