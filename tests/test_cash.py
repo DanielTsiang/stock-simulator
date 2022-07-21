@@ -25,7 +25,7 @@ class CashTest(ApplicationTestBase):
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertEqual(True, response.json)
-        self.assertEqual(NEW_CASH, cash)
+        self.assertEqual(NEW_CASH * 100, cash)
 
 
 if __name__ == "__main__":

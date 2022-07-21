@@ -43,7 +43,7 @@ class IndexTest(ApplicationTestBase):
         mock_lookup.return_value = LOOKUP_RETURN
 
         expected_response = {
-            "cash_data": DEFAULT_CASH,
+            "cash_data": DEFAULT_CASH / 100,
             "shares_data": [
                 {
                     "name": NAME,
@@ -62,8 +62,8 @@ class IndexTest(ApplicationTestBase):
                 "symbol": SYMBOL,
                 "name": NAME,
                 "shares_count": 1,
-                "price": NEW_PRICE,
-                "total": NEW_PRICE,
+                "price": int(NEW_PRICE * 100),
+                "total": int(NEW_PRICE * 100),
             }
         ]
 

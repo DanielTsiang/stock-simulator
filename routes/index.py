@@ -34,20 +34,20 @@ def index_json():
 
     for share in SHARES:
         price = float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
-        new_shares_total = share["shares_count"] * float(
-            QUOTED[share["symbol"]]["quote"]["latestPrice"]
-        )
+        price_minor_units = int(price * 100)
+        new_shares_total = share["shares_count"] * price_minor_units
         db.execute(
             "UPDATE shares SET price = ?, total = ? WHERE user_id = ? AND symbol = ?",
-            price,
+            price_minor_units,
             new_shares_total,
             user_id,
             share["symbol"],
         )
         share["price"] = price
-        share["total"] = new_shares_total
+        share["total"] = new_shares_total / 100
 
     # Check how much cash the user currently has
     CASH = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+    cash_major_units = CASH / 100
 
-    return jsonify({"shares_data": SHARES, "cash_data": CASH})
+    return jsonify({"shares_data": SHARES, "cash_data": cash_major_units})

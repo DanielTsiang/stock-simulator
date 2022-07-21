@@ -109,7 +109,7 @@ def all_symbols():
 
 def usd(value):
     """Format value as USD."""
-    return f"${value:,.2f}"
+    return f"${value / 100:,.2f}"
 
 
 def datetimeformat(dt_string, format="%d-%m-%Y %H:%M:%S"):

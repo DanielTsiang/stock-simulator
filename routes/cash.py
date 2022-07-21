@@ -17,9 +17,10 @@ def cash():
 
     # Access form data
     cash = float(request.form.get("cash"))
+    cash_minor_units = int(cash * 100)
 
     # Update cash in users table for user
-    db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, user_id)
+    db.execute("UPDATE users SET cash = ? WHERE id = ?", cash_minor_units, user_id)
 
     # Return success status
     return jsonify(True)

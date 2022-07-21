@@ -43,7 +43,9 @@ def sell():
     # Calculate new cash amount user has
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
     price = float(QUOTED[symbol]["quote"]["latestPrice"])
-    cash_gained = price * shares
+    price_minor_units = int(price * 100)
+    cost = price_minor_units * shares
+    cash_gained = price_minor_units * shares
     new_cash_total = cash + cash_gained
 
     # Update cash in users table for user
@@ -56,7 +58,7 @@ def sell():
         user_id,
         symbol,
         -shares,
-        price,
+        price_minor_units,
     )
 
     # Keep track of shares in shares table
@@ -70,11 +72,11 @@ def sell():
 
     # User still owns shares of the stock
     else:
-        shares_value_total = new_shares_total * price
+        shares_value_total = new_shares_total * price_minor_units
         db.execute(
             "UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
             new_shares_total,
-            price,
+            price_minor_units,
             shares_value_total,
             user_id,
             symbol,

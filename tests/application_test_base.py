@@ -17,10 +17,10 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 # Config
-DEFAULT_CASH = 10000.00
+DEFAULT_CASH = 1000000
 HISTORY_ID = 93
 NAME = "Alphabet Inc"
-NEW_CASH = 8888
+NEW_CASH = 888888
 NEW_PRICE = 2174.53
 PRICE = 2129.78
 SYMBOL = "GOOGL"

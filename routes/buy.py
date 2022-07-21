@@ -37,7 +37,8 @@ def buy():
     # Check if user has enough cash to buy shares
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
     price = float(QUOTED[symbol]["quote"]["latestPrice"])
-    cost = price * shares
+    price_minor_units = int(price * 100)
+    cost = price_minor_units * shares
     if cash < cost:
         # User does not have enough cash to buy shares
         return apology("can't afford", 400)
@@ -55,7 +56,7 @@ def buy():
         user_id,
         symbol,
         shares,
-        price,
+        price_minor_units,
     )
 
     if current_shares := db.execute(
@@ -65,11 +66,11 @@ def buy():
     ):
         # Shares have been bought before
         new_shares_total = current_shares[0]["shares_count"] + shares
-        shares_value_total = new_shares_total * price
+        shares_value_total = new_shares_total * price_minor_units
         db.execute(
             "UPDATE shares SET shares_count = ?, price = ?, total = ? WHERE user_id = ? AND symbol = ?",
             new_shares_total,
-            price,
+            price_minor_units,
             shares_value_total,
             user_id,
             symbol,
@@ -84,7 +85,7 @@ def buy():
             symbol,
             name,
             shares,
-            price,
+            price_minor_units,
             cost,
         )
 
@@ -114,6 +115,7 @@ def buy_check():
     # Check if user has enough cash to buy shares
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
     price = float(QUOTED[symbol]["quote"]["latestPrice"])
-    cost = price * shares
+    price_minor_units = int(price * 100)
+    cost = price_minor_units * shares
     # Return True if user has enough cash to buy shares, otherwise return False
     return jsonify(True) if cash >= cost else jsonify(False)
