@@ -1,6 +1,6 @@
 # Stock Simulator
 
-[![Stock Simulator](https://img.shields.io/website-up-down-green-red/https/danieltsiang.github.io.svg)](https://stock-simulator-dt.herokuapp.com/)
+[![Stock Simulator](https://img.shields.io/website-up-down-green-red/https/danieltsiang.github.io.svg)](https://stock-simulator.onrender.com/)
 [![Test App Status](https://github.com/DanielTsiang/stock-simulator/actions/workflows/test-app.yml/badge.svg?&kill_cache=1)](https://github.com/DanielTsiang/stock-simulator/actions/workflows/test-app.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/DanielTsiang/stock-simulator/badge.svg)](https://snyk.io/test/github/DanielTsiang/stock-simulator)
 [![Profile views](https://gpvc.arturio.dev/stock-simulator)](https://gpvc.arturio.dev/stock-simulator)
@@ -11,7 +11,7 @@
 A RESTful web app that simulates managing portfolios of stocks, using real stocks’ prices by querying an API.
 
 ## Getting Started
-1. Visit the web application [here](https://stock-simulator-dt.herokuapp.com/).
+1. Visit the web application [here](https://stock-simulator.onrender.com/).
 2. Register for an account!
 
 ### Video Demo
@@ -36,7 +36,7 @@ https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-
 ![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?logo=jquery&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?logo=githubactions&logoColor=white)
 ![Dependabot](https://img.shields.io/badge/dependabot-025E8C?logo=dependabot&logoColor=white)
-![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?logo=heroku&logoColor=white)
+![Render](https://img.shields.io/badge/render-46E3B7.svg?logo=render&logoColor=white)
 
 * Python with Flask framework
 * Gunicorn
@@ -46,7 +46,7 @@ https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-
 * JavaScript with jQuery framework, and DataTables library
 * GitHub Actions workflows for CI to automate running unit tests
 * Dependabot to keep dependencies up to date and mitigate security vulnerabilities
-* Heroku for deployment
+* Render for deployment
 
 ## Python
 ### Running locally with Python
@@ -57,7 +57,7 @@ export API_KEY=<IEX Cloud API Key>
 ```
 2. In the root folder where `requirements.txt` is contained, run `pip3 install -r requirements.txt` in the terminal to install the requirements for this project.
 3. To start the app, in the root folder, run the following command in the terminal:
-` gunicorn --log-config logging.conf application:app --preload`
+`gunicorn --log-config logging.conf application:app --preload`
 4. Visit `localhost:8000` in your web browser.
 5. To shut down the app, in the terminal hit `CTRL+C`.
 

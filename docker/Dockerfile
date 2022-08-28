@@ -20,6 +20,4 @@ COPY requirements_test.txt requirements_test.txt
 RUN pip install -r requirements_test.txt
 
 # Start app
-ENV FLASK_APP=application.py
-ENV FLASK_DEBUG=0
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+CMD ["gunicorn", "--log-config", "logging.conf", "application:app", "--preload"]
