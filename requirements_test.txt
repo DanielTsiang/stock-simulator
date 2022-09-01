@@ -1,2 +1,2 @@
 # Testing requirements
-blinker~=1.4
+blinker~=1.5
