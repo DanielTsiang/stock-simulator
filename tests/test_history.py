@@ -66,7 +66,9 @@ class HistoryTest(ApplicationTestBase):
                     "price": utils.usd(PRICE),
                     "shares": 1,
                     "symbol": SYMBOL,
-                    "transacted": None,
+                    "transacted": datetime.now(timezone.utc).strftime(
+                        "%d-%m-%Y %H:%M:%S"
+                    ),
                     "user_id": USER_ID2,
                 }
             ]
@@ -78,13 +80,20 @@ class HistoryTest(ApplicationTestBase):
             with test_client.session_transaction() as session:
                 session["user_id"] = USER_ID2
             response = test_client.get("/history_json")
-            expected_history["data"][0]["transacted"] = datetime.now(timezone.utc).strftime(
-                                                            "%d-%m-%Y %H:%M:%S"
-                                                        )
 
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertEqual(expected_history, response.json)
+
+        expected_results = expected_history["data"][0]
+        actual_results = response.json["data"][0]
+        for key in expected_results:
+            if key == "transacted":
+                self.assertEqual(
+                    expected_results[key][:-3],
+                    actual_results[key][:-3],
+                )
+            else:
+                self.assertEqual(expected_results[key], actual_results[key])
 
 
 if __name__ == "__main__":
