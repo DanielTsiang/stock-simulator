@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from http import HTTPStatus
 from pathlib import Path
+from unittest import mock
 import sys
 import unittest
 
@@ -57,18 +58,19 @@ class HistoryTest(ApplicationTestBase):
         self.assertEqual(True, response.json)
         self.assertEqual([], transactions)
 
-    def test_get_history_json(self):
+    @mock.patch("routes.history.datetimeformat")
+    def test_get_history_json(self, mock_datetime):
         # GIVEN
-        expected_history = {
+        transaction_timestamp = datetime.now(timezone.utc).strftime("%d-%m-%Y %H:%M:%S")
+        mock_datetime.return_value = transaction_timestamp
+        expected_results = {
             "data": [
                 {
                     "id": HISTORY_ID,
                     "price": utils.usd(PRICE),
                     "shares": 1,
                     "symbol": SYMBOL,
-                    "transacted": datetime.now(timezone.utc).strftime(
-                        "%d-%m-%Y %H:%M:%S"
-                    ),
+                    "transacted": transaction_timestamp,
                     "user_id": USER_ID2,
                 }
             ]
@@ -83,17 +85,7 @@ class HistoryTest(ApplicationTestBase):
 
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)
-
-        expected_results = expected_history["data"][0]
-        actual_results = response.json["data"][0]
-        for key in expected_results:
-            if key == "transacted":
-                self.assertEqual(
-                    expected_results[key][:-3],
-                    actual_results[key][:-3],
-                )
-            else:
-                self.assertEqual(expected_results[key], actual_results[key])
+        self.assertDictEqual(expected_results, response.json)
 
 
 if __name__ == "__main__":

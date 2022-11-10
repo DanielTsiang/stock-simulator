@@ -46,9 +46,9 @@ class UtilsTest(unittest.TestCase):
         symbols_data_stripped, symbols_only_data, symbols_list = utils.all_symbols()
 
         # THEN
-        self.assertTrue(len(symbols_data_stripped) > 0)
-        self.assertTrue(len(symbols_only_data) > 0)
-        self.assertTrue(len(symbols_list) > 0)
+        self.assertGreater(len(symbols_data_stripped), 0)
+        self.assertGreater(len(symbols_only_data), 0)
+        self.assertGreater(len(symbols_list), 0)
 
     def test_usd(self):
         # GIVEN
