@@ -2,7 +2,7 @@ cs50==9.2.5
 Flask==2.2.3
 Flask-Session==0.4.0
 gunicorn==20.1.0
-psycopg2-binary==2.9.5
+psycopg2-binary==2.9.6
 requests==2.29.0
 Werkzeug==2.2.3
 setuptools>=65.5.1 # not directly required, pinned to avoid a vulnerability
