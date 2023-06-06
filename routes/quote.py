@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, escape, jsonify, request
 
 from utils import apology, login_required, lookup
 
@@ -13,7 +13,7 @@ def quote():
     # Access form data
     if symbol := request.args.get("symbol_quote"):
         return (
-            jsonify(QUOTED=quoted, symbol=symbol)  # Return quoted information
+            jsonify(QUOTED=quoted, symbol=escape(symbol))  # Return quoted information
             if (quoted := lookup(symbol))  # Obtain quote using lookup function
             else apology("invalid symbol", 400)  # Invalid symbol provided
         )
