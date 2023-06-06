@@ -67,14 +67,13 @@ def lookup(symbols):
     try:
         required_fields = ["symbol", "longName", "currentPrice"]
 
-        # Use dict comprehension to create response dict
-        response = {
+        # Use dict comprehension to create dict to be returned
+        return {
             # Use dict comprehension to remove unwanted key value pairs from yfinance.Ticker.info dict
             ticker: {key: tickers[ticker].info[key] for key in required_fields}
             for ticker in tickers
         }
-
-        return response
+    
     except (KeyError, TypeError, ValueError):
         return None
 
