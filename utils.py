@@ -1,10 +1,26 @@
-import os
-import urllib.parse
 from datetime import datetime
 from functools import wraps
 
 import requests
+import yfinance as yf
 from flask import redirect, render_template, session
+from pyrate_limiter import Duration, Limiter, RequestRate
+from requests import Session
+from requests_cache import CacheMixin, SQLiteCache
+from requests_ratelimiter import LimiterMixin, MemoryQueueBucket
+
+
+class CachedLimiterSession(CacheMixin, LimiterMixin, Session):
+    pass
+
+
+session = CachedLimiterSession(
+    limiter=Limiter(
+        RequestRate(2, Duration.SECOND * 5)
+    ),  # max 2 requests per 5 seconds
+    bucket_class=MemoryQueueBucket,
+    backend=SQLiteCache("yfinance.cache"),
+)
 
 
 def apology(message, code=400):
@@ -56,25 +72,32 @@ def lookup(symbols):
 
     # Contact API
     try:
-        api_key = os.environ.get("API_KEY")
-        if type(symbols) is list:
+        if isinstance(symbols, list):
             # convert list of symbols into string of symbols with commas
             symbols = ",".join(symbols)
-        url = f"https://cloud.iexapis.com/stable/stock/market/batch?symbols={urllib.parse.quote_plus(symbols)}&types=quote&filter=symbol,companyName,latestPrice&token={api_key}"
-        response = requests.get(url)
-        response.raise_for_status()
+        session.headers["User-agent"] = "stock-simulator/1.0"
+        tickers = yf.Tickers(symbols, session=session).tickers
     except requests.RequestException:
         return None
 
     # Parse response
     try:
-        return response.json()
+        required_fields = ["symbol", "longName", "currentPrice"]
+
+        # Use dict comprehension to create response dict
+        response = {
+            # Use dict comprehension to remove unwanted key value pairs from yfinance.Ticker.info dict
+            ticker: {key: tickers[ticker].info[key] for key in required_fields}
+            for ticker in tickers
+        }
+
+        return response
     except (KeyError, TypeError, ValueError):
         return None
 
 
 def all_symbols():
-    """Get a list of all valid IEX symbols."""
+    """Get a list of all valid symbols."""
 
     # Get JSON data from url
     try:

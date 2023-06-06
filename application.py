@@ -14,10 +14,6 @@ if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
 
-# Make sure API key is set
-if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
-
 from routes.buy import buy_blueprint
 from routes.cash import cash_blueprint
 from routes.history import history_blueprint

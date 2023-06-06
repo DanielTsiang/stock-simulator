@@ -9,10 +9,10 @@ history_blueprint = Blueprint("history", __name__)
 @history_blueprint.route("/history", methods=["GET", "DELETE"])
 @login_required
 def history():
+    """Clear or show history of transactions"""
     # Access user's id
     user_id = session["user_id"]
 
-    """Clear or show history of transactions"""
     # User reached route via GET
     if request.method == "GET":
         return render_template("history.html")

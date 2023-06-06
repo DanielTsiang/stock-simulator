@@ -31,11 +31,9 @@ USER_ID2 = 2
 
 LOOKUP_RETURN = {
     "GOOGL": {
-        "quote": {
-            "symbol": SYMBOL,
-            "companyName": NAME,
-            "latestPrice": NEW_PRICE,
-        }
+        "symbol": SYMBOL,
+        "longName": NAME,
+        "currentPrice": NEW_PRICE,
     }
 }
 

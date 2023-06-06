@@ -18,11 +18,11 @@ def quote():
         return apology("must provide quote", 400)
 
     # Obtain quote using lookup function
-    QUOTED = lookup(symbol)
+    quoted = lookup(symbol)
 
     # Invalid symbol provided
-    if not QUOTED:
+    if not quoted:
         return apology("invalid symbol", 400)
 
     # Return quoted information
-    return jsonify(QUOTED=QUOTED, symbol=symbol)
+    return jsonify(QUOTED=quoted, symbol=symbol)

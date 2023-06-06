@@ -53,7 +53,6 @@ https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-
 1. Export the following environment variables necessary to run the app, e.g. on MacOS/Linux:
 ```
 export DATABASE_URL=<PostgreSQL database URL>
-export API_KEY=<IEX Cloud API Key>
 ```
 2. In the root folder where `requirements.txt` is contained, run `pip3 install -r requirements.txt` in the terminal to install the requirements for this project.
 3. To start the app, in the root folder, run the following command in the terminal:
@@ -76,7 +75,6 @@ python3 -m unittest discover -s ./tests -p "test*.py"
 3. Export the following environment variables necessary to run the app, e.g. on MacOS/Linux:
 ```
 export DATABASE_URL=<PostgreSQL database URL>
-export API_KEY=<IEX Cloud API Key>
 ```
 4. To run the Docker container, in the root folder, run the following command in the terminal:
 `sh docker/docker-run.sh`
