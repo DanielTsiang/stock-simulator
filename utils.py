@@ -4,23 +4,6 @@ from functools import wraps
 import requests
 import yfinance as yf
 from flask import redirect, render_template, session
-from pyrate_limiter import Duration, Limiter, RequestRate
-from requests import Session
-from requests_cache import CacheMixin, SQLiteCache
-from requests_ratelimiter import LimiterMixin, MemoryQueueBucket
-
-
-class CachedLimiterSession(CacheMixin, LimiterMixin, Session):
-    pass
-
-
-session = CachedLimiterSession(
-    limiter=Limiter(
-        RequestRate(2, Duration.SECOND * 5)
-    ),  # max 2 requests per 5 seconds
-    bucket_class=MemoryQueueBucket,
-    backend=SQLiteCache("yfinance.cache"),
-)
 
 
 def apology(message, code=400):
@@ -75,8 +58,8 @@ def lookup(symbols):
         if isinstance(symbols, list):
             # convert list of symbols into string of symbols with commas
             symbols = ",".join(symbols)
-        session.headers["User-agent"] = "stock-simulator/1.0"
-        tickers = yf.Tickers(symbols, session=session).tickers
+
+        tickers = yf.Tickers(symbols).tickers
     except requests.RequestException:
         return None
 
