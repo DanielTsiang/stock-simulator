@@ -1,15 +1,16 @@
-from http import HTTPStatus
-from pathlib import Path
-from werkzeug.security import check_password_hash
 import sys
 import unittest
+from http import HTTPStatus
+from pathlib import Path
+
+from werkzeug.security import check_password_hash
 
 # Append root directory to list of searched paths
 sys.path.append(str(Path(__file__).parents[1]))
 
 from tests.application_test_base import (
-    ApplicationTestBase,
     TEST1,
+    ApplicationTestBase,
     app,
     captured_templates,
     db,

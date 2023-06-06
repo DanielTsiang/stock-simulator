@@ -1,13 +1,13 @@
-from contextlib import contextmanager
-from flask import template_rendered
-from pathlib import Path
-from unittest import mock
 import logging
+import os
 import sqlite3
 import sys
-import os
 import unittest
+from contextlib import contextmanager
+from pathlib import Path
+from unittest import mock
 
+from flask import template_rendered
 
 # Append root directory to list of searched paths
 sys.path.append(str(Path(__file__).parents[1]))

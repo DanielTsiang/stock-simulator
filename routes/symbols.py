@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, jsonify, render_template, request
 
 from utils import all_symbols, login_required
-
 
 symbols_blueprint = Blueprint("symbols", __name__)
 

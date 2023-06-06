@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request, session
 from application import db
 from utils import apology, login_required, lookup
 
-
 sell_blueprint = Blueprint("sell", __name__)
 
 
