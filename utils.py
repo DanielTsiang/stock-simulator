@@ -1,9 +1,8 @@
-import os
-import urllib.parse
 from datetime import datetime
 from functools import wraps
 
 import requests
+import yfinance as yf
 from flask import redirect, render_template, session
 
 
@@ -56,25 +55,31 @@ def lookup(symbols):
 
     # Contact API
     try:
-        api_key = os.environ.get("API_KEY")
-        if type(symbols) is list:
+        if isinstance(symbols, list):
             # convert list of symbols into string of symbols with commas
             symbols = ",".join(symbols)
-        url = f"https://cloud.iexapis.com/stable/stock/market/batch?symbols={urllib.parse.quote_plus(symbols)}&types=quote&filter=symbol,companyName,latestPrice&token={api_key}"
-        response = requests.get(url)
-        response.raise_for_status()
+
+        tickers = yf.Tickers(symbols).tickers
     except requests.RequestException:
         return None
 
     # Parse response
     try:
-        return response.json()
+        required_fields = ["symbol", "longName", "currentPrice"]
+
+        # Use dict comprehension to create dict to be returned
+        return {
+            # Use dict comprehension to remove unwanted key value pairs from yfinance.Ticker.info dict
+            ticker: {key: tickers[ticker].info[key] for key in required_fields}
+            for ticker in tickers
+        }
+    
     except (KeyError, TypeError, ValueError):
         return None
 
 
 def all_symbols():
-    """Get a list of all valid IEX symbols."""
+    """Get a list of all valid symbols."""
 
     # Get JSON data from url
     try:

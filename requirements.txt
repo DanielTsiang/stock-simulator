@@ -7,3 +7,4 @@ requests==2.31.0
 Werkzeug==2.2.3
 setuptools>=65.5.1 # not directly required, pinned to avoid a vulnerability
 wheel>=0.38.0 # not directly required, pinned to avoid a vulnerability
+yfinance==0.2.18

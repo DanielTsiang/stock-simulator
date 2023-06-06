@@ -169,7 +169,7 @@ $(function() {
             symbol_quote: {
                 required: "Please enter a symbol",
                 symbol_check: "Please only enter valid symbol characters",
-                remote: "Invalid IEX symbol!",
+                remote: "Invalid symbol!",
             },
         },
         // Submit form when valid
@@ -201,7 +201,7 @@ $(function() {
                     // Display stock information
                     let QUOTED = response.QUOTED;
                     let symbol = response.symbol;
-                    $("#quoted").html(`A share of ${QUOTED[symbol]["quote"]["companyName"]} (${symbol}) costs ${formatter.format(QUOTED[symbol]["quote"]["latestPrice"])}.`);
+                    $("#quoted").html(`A share of ${QUOTED[symbol]["longName"]} (${symbol}) costs ${formatter.format(QUOTED[symbol]["currentPrice"])}.`);
                 },
                 complete: function() {
                     $("#loading-overlay").fadeOut(300);
@@ -253,7 +253,7 @@ $(function() {
             symbol_buy: {
                 required: "Please enter a symbol",
                 symbol_check: "Please only enter valid symbol characters",
-                remote: "Invalid IEX symbol!",
+                remote: "Invalid symbol!",
             },
             shares_buy: {
                 required: "Please enter a share quantity",
@@ -339,7 +339,7 @@ $(function() {
             symbol_sell: {
                 required: "Please enter a symbol",
                 symbol_check: "Please only enter valid symbol characters",
-                remote: "Invalid IEX symbol!",
+                remote: "Invalid symbol!",
             },
             shares_sell: {
                 required: "Please enter a share quantity",
