@@ -1,12 +1,12 @@
-from http import HTTPStatus
-from pathlib import Path
 import sys
 import unittest
+from http import HTTPStatus
+from pathlib import Path
 
 # Append root directory to list of searched paths
 sys.path.append(str(Path(__file__).parents[1]))
 
-from tests.application_test_base import ApplicationTestBase, NEW_CASH, USER_ID2, app, db
+from tests.application_test_base import NEW_CASH, USER_ID2, ApplicationTestBase, app, db
 
 
 class CashTest(ApplicationTestBase):

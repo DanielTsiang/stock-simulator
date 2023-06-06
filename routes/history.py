@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, render_template, request, session
 from application import db
 from utils import datetimeformat, login_required, usd
 
-
 history_blueprint = Blueprint("history", __name__)
 
 

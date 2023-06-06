@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, render_template, session
 from application import db
 from utils import login_required, lookup
 
-
 index_blueprint = Blueprint("index", __name__)
 
 

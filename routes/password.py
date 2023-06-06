@@ -4,7 +4,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from application import db
 from utils import apology, login_required
 
-
 password_blueprint = Blueprint("password", __name__)
 
 

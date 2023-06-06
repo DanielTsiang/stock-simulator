@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash
 from application import db
 from utils import apology
 
-
 register_blueprint = Blueprint("register", __name__)
 
 

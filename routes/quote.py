@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 
 from utils import apology, login_required, lookup
 
-
 quote_blueprint = Blueprint("quote", __name__)
 
 

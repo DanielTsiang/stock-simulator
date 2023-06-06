@@ -1,13 +1,12 @@
 import os
+from tempfile import mkdtemp
 
 from cs50 import SQL
 from flask import Flask, redirect, request
 from flask_session import Session
-from tempfile import mkdtemp
 from werkzeug.exceptions import HTTPException, InternalServerError, default_exceptions
 
 from utils import apology, datetimeformat, usd
-
 
 # Configure CS50 Library to use PostgreSQL database
 uri = os.environ.get("DATABASE_URL")
@@ -29,7 +28,6 @@ from routes.quote import quote_blueprint
 from routes.register import register_blueprint
 from routes.sell import sell_blueprint
 from routes.symbols import symbols_blueprint
-
 
 # Configure application
 app = Flask(__name__)

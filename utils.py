@@ -1,10 +1,10 @@
 import os
-import requests
 import urllib.parse
-
-from flask import redirect, render_template, session
-from functools import wraps
 from datetime import datetime
+from functools import wraps
+
+import requests
+from flask import redirect, render_template, session
 
 
 def apology(message, code=400):
