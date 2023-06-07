@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash
 from application import db
 from utils import apology
 
-
 register_blueprint = Blueprint("register", __name__)
 
 
@@ -27,15 +26,15 @@ def register():
         return apology("must provide username", 400)
 
     # Ensure password was submitted
-    elif not password:
+    if not password:
         return apology("must provide password", 400)
 
     # Ensure password confirmation was submitted
-    elif not confirmation:
+    if not confirmation:
         return apology("must provide password confirmation", 400)
 
     # Ensure password matches password confirmation
-    elif password != confirmation:
+    if password != confirmation:
         return apology("passwords do not match", 400)
 
     lower_case_username = username.lower()
@@ -43,20 +42,20 @@ def register():
         # Username already exists
         flash("Username is already taken", "danger")
         return render_template("register.html")
-    else:
-        # Username does not already exist
-        # Insert data into database
-        user_id = db.execute(
-            "INSERT INTO users (username, hash) VALUES (?, ?)",
-            lower_case_username,
-            generate_password_hash(password),
-        )
 
-        # Remember which user has logged in
-        session["user_id"] = user_id
+    # Username does not already exist
+    # Insert data into database
+    user_id = db.execute(
+        "INSERT INTO users (username, hash) VALUES (?, ?)",
+        lower_case_username,
+        generate_password_hash(password),
+    )
 
-        # Redirect user to home page
-        return redirect("/")
+    # Remember which user has logged in
+    session["user_id"] = user_id
+
+    # Redirect user to home page
+    return redirect("/")
 
 
 @register_blueprint.route("/username_check")

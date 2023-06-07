@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request, session
 from application import db
 from utils import apology, login_required, lookup
 
-
 sell_blueprint = Blueprint("sell", __name__)
 
 
@@ -28,7 +27,7 @@ def sell():
         return apology("must provide shares", 400)
 
     # Obtain quote using lookup function
-    QUOTED = lookup(symbol)
+    quoted = lookup(symbol)
 
     # Check if user has enough shares to sell as requested
     current_shares = db.execute(
@@ -42,7 +41,7 @@ def sell():
     # User has enough shares to sell as requested
     # Calculate new cash amount user has
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    price = float(QUOTED[symbol]["quote"]["latestPrice"])
+    price = float(quoted[symbol]["currentPrice"])
     price_minor_units = int(price * 100)
     cash_gained = price_minor_units * shares
     new_cash_total = cash + cash_gained

@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, render_template, session
 from application import db
 from utils import login_required, lookup
 
-
 index_blueprint = Blueprint("index", __name__)
 
 
@@ -24,16 +23,16 @@ def index_json():
     user_id = session["user_id"]
 
     # Select information from shares table for logged-in user
-    SHARES = db.execute("SELECT * FROM shares WHERE user_id = ?", user_id)
+    shares = db.execute("SELECT * FROM shares WHERE user_id = ?", user_id)
 
     # List comprehension to convert list of dicts into list of symbols
-    symbols_owned = [share["symbol"] for share in SHARES]
+    symbols_owned = [share["symbol"] for share in shares]
 
     # Obtain the latest share price(s) from API and update database
-    QUOTED = lookup(symbols_owned)
+    quoted = lookup(symbols_owned)
 
-    for share in SHARES:
-        price = float(QUOTED[share["symbol"]]["quote"]["latestPrice"])
+    for share in shares:
+        price = float(quoted[share["symbol"]]["currentPrice"])
         price_minor_units = int(price * 100)
         new_shares_total = share["shares_count"] * price_minor_units
         db.execute(
@@ -47,7 +46,7 @@ def index_json():
         share["total"] = new_shares_total / 100
 
     # Check how much cash the user currently has
-    CASH = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    cash_major_units = CASH / 100
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+    cash_major_units = cash / 100
 
-    return jsonify({"shares_data": SHARES, "cash_data": cash_major_units})
+    return jsonify({"shares_data": shares, "cash_data": cash_major_units})

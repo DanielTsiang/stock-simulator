@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, jsonify, render_template, request
 
 from utils import all_symbols, login_required
 
-
 symbols_blueprint = Blueprint("symbols", __name__)
 
-# Get valid IEX symbol data
+# Get valid symbol data
 symbols_data, symbols_only_data, symbols_list = all_symbols()
 
 
@@ -42,7 +41,7 @@ def symbol_check():
         if data := request.args.get(f"symbol_{check}"):
             symbol = data.upper()
 
-    # Return True if valid IEX symbol, otherwise return False
+    # Return True if valid symbol, otherwise return False
     return jsonify(True) if symbol in symbols_list else jsonify(False)
 
 

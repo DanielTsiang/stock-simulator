@@ -1,23 +1,18 @@
 import os
+from tempfile import mkdtemp
 
 from cs50 import SQL
 from flask import Flask, redirect, request
 from flask_session import Session
-from tempfile import mkdtemp
 from werkzeug.exceptions import HTTPException, InternalServerError, default_exceptions
 
 from utils import apology, datetimeformat, usd
-
 
 # Configure CS50 Library to use PostgreSQL database
 uri = os.environ.get("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
 db = SQL(uri)
-
-# Make sure API key is set
-if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
 
 from routes.buy import buy_blueprint
 from routes.cash import cash_blueprint
@@ -29,7 +24,6 @@ from routes.quote import quote_blueprint
 from routes.register import register_blueprint
 from routes.sell import sell_blueprint
 from routes.symbols import symbols_blueprint
-
 
 # Configure application
 app = Flask(__name__)

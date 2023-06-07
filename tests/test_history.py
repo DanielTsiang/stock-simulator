@@ -1,26 +1,25 @@
+import sys
+import unittest
 from datetime import datetime, timezone
 from http import HTTPStatus
 from pathlib import Path
 from unittest import mock
-import sys
-import unittest
 
 # Append root directory to list of searched paths
 sys.path.append(str(Path(__file__).parents[1]))
 
+import utils
 from tests.application_test_base import (
-    ApplicationTestBase,
     HISTORY_ID,
     PRICE,
     SYMBOL,
     USER_ID1,
     USER_ID2,
+    ApplicationTestBase,
     app,
     captured_templates,
     db,
 )
-
-import utils
 
 
 class HistoryTest(ApplicationTestBase):

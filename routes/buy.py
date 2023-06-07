@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request, session
 from application import db
 from utils import apology, login_required, lookup
 
-
 buy_blueprint = Blueprint("buy", __name__)
 
 
@@ -28,15 +27,15 @@ def buy():
         return apology("must provide shares", 400)
 
     # Obtain quote using lookup function
-    QUOTED = lookup(symbol)
+    quoted = lookup(symbol)
 
     # Ensure valid symbol was submitted
-    if QUOTED is None:
+    if quoted is None:
         return apology("invalid symbol", 400)
 
     # Check if user has enough cash to buy shares
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    price = float(QUOTED[symbol]["quote"]["latestPrice"])
+    price = float(quoted[symbol]["currentPrice"])
     price_minor_units = int(price * 100)
     cost = price_minor_units * shares
     if cash < cost:
@@ -78,7 +77,7 @@ def buy():
 
     else:
         # Shares have not been bought before
-        name = QUOTED[symbol]["quote"]["companyName"]
+        name = quoted[symbol]["longName"]
         db.execute(
             "INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)",
             user_id,
@@ -110,11 +109,11 @@ def buy_check():
         return jsonify(True)
 
     # Obtain quote using lookup function
-    QUOTED = lookup(symbol)
+    quoted = lookup(symbol)
 
     # Check if user has enough cash to buy shares
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    price = float(QUOTED[symbol]["quote"]["latestPrice"])
+    price = float(quoted[symbol]["currentPrice"])
     price_minor_units = int(price * 100)
     cost = price_minor_units * shares
     # Return True if user has enough cash to buy shares, otherwise return False

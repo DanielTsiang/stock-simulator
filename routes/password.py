@@ -4,7 +4,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from application import db
 from utils import apology, login_required
 
-
 password_blueprint = Blueprint("password", __name__)
 
 
@@ -31,15 +30,15 @@ def password():
         return apology("must provide old password", 400)
 
     # Ensure new password was submitted
-    elif not new_password:
+    if not new_password:
         return apology("must provide new password", 400)
 
     # Ensure password confirmation was submitted
-    elif not confirmation:
+    if not confirmation:
         return apology("must provide password confirmation", 400)
 
     # Ensure password matches password confirmation
-    elif new_password != confirmation:
+    if new_password != confirmation:
         return apology("passwords do not match", 400)
 
     # Query database for username
@@ -51,16 +50,15 @@ def password():
         return render_template("password.html")
 
     # Correct old password
-    else:
-        # Update user's password in database
-        db.execute(
-            "UPDATE users SET hash = ? WHERE id = ?",
-            generate_password_hash(new_password),
-            user_id,
-        )
+    # Update user's password in database
+    db.execute(
+        "UPDATE users SET hash = ? WHERE id = ?",
+        generate_password_hash(new_password),
+        user_id,
+    )
 
-        # Return success status
-        return jsonify(True)
+    # Return success status
+    return jsonify(True)
 
 
 @password_blueprint.route("/password_check", methods=["POST"])

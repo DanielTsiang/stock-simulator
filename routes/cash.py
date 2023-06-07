@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request, session
 from application import db
 from utils import login_required
 
-
 cash_blueprint = Blueprint("cash", __name__)
 
 
