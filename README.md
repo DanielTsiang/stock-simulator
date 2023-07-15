@@ -3,7 +3,7 @@
 [![Stock Simulator](https://img.shields.io/website-up-down-green-red/https/danieltsiang.github.io.svg)](https://stock-simulator.onrender.com/)
 [![Test App Status](https://github.com/DanielTsiang/stock-simulator/actions/workflows/test-app.yml/badge.svg?&kill_cache=1)](https://github.com/DanielTsiang/stock-simulator/actions/workflows/test-app.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/DanielTsiang/stock-simulator/badge.svg)](https://snyk.io/test/github/DanielTsiang/stock-simulator)
-[![Profile views](https://gpvc.arturio.dev/stock-simulator)](https://gpvc.arturio.dev/stock-simulator)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fstock-simulator.onrender.com%2F&label=Hits&countColor=%2337d67a&style=plastic)](https://visitorbadge.io/status?path=https%3A%2F%2Fstock-simulator.onrender.com%2F)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Buymeacoffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label)](https://www.buymeacoffee.com/dantsiang8)
 
