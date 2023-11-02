@@ -2,8 +2,8 @@ from datetime import datetime
 from functools import wraps
 
 import requests
-import yfinance as yf
 from flask import redirect, render_template, session
+from yahoofinancials import YahooFinancials
 
 
 def apology(message, code=400):
@@ -55,25 +55,25 @@ def lookup(symbols):
 
     # Contact API
     try:
-        if isinstance(symbols, list):
-            # convert list of symbols into string of symbols with commas
-            symbols = ",".join(symbols)
+        if isinstance(symbols, str):
+            # convert string of symbols with commas into list of symbols
+            symbols = symbols.split(",")
 
-        tickers = yf.Tickers(symbols).tickers
+        tickers = YahooFinancials(symbols, concurrent=True, max_workers=8, country="US")
     except requests.RequestException:
         return None
 
     # Parse response
     try:
-        required_fields = ["symbol", "longName", "currentPrice"]
+        required_fields = ["symbol", "longName", "regularMarketPrice"]
 
         # Use dict comprehension to create dict to be returned
         return {
-            # Use dict comprehension to remove unwanted key value pairs from yfinance.Ticker.info dict
-            ticker: {key: tickers[ticker].info[key] for key in required_fields}
+            # Use dict comprehension to remove unwanted key value pairs from dict
+            ticker: {key: tickers[ticker][key] for key in required_fields}
             for ticker in tickers
         }
-    
+
     except (KeyError, TypeError, ValueError):
         return None
 

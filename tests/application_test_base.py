@@ -33,7 +33,7 @@ LOOKUP_RETURN = {
     "GOOGL": {
         "symbol": SYMBOL,
         "longName": NAME,
-        "currentPrice": NEW_PRICE,
+        "regularMarketPrice": NEW_PRICE,
     }
 }
 

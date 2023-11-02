@@ -32,7 +32,7 @@ def index_json():
     quoted = lookup(symbols_owned)
 
     for share in shares:
-        price = float(quoted[share["symbol"]]["currentPrice"])
+        price = float(quoted[share["symbol"]]["regularMarketPrice"])
         price_minor_units = int(price * 100)
         new_shares_total = share["shares_count"] * price_minor_units
         db.execute(
