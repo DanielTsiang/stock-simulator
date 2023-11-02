@@ -55,11 +55,7 @@ def lookup(symbols):
 
     # Contact API
     try:
-        if isinstance(symbols, str):
-            # convert string of symbols with commas into list of symbols
-            symbols = symbols.split(",")
-
-        tickers = YahooFinancials(symbols, concurrent=True, max_workers=8, country="US")
+        tickers = YahooFinancials(symbols, concurrent=True, max_workers=8, country="US").get_stock_price_data()
     except requests.RequestException:
         return None
 
