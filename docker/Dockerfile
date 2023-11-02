@@ -1,4 +1,4 @@
-FROM python:3.10-slim-bullseye
+FROM python:3.11-slim
 
 # Copy source code and set working directory
 COPY . /app
