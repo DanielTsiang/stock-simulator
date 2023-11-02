@@ -1,4 +1,5 @@
-from flask import Blueprint, escape, jsonify, request
+from flask import Blueprint, jsonify, request
+from markupsafe import escape
 
 from utils import apology, login_required, lookup
 
