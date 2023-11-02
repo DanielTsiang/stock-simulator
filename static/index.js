@@ -201,7 +201,7 @@ $(function() {
                     // Display stock information
                     let QUOTED = response.QUOTED;
                     let symbol = response.symbol;
-                    $("#quoted").html(`A share of ${QUOTED[symbol]["longName"]} (${symbol}) costs ${formatter.format(QUOTED[symbol]["currentPrice"])}.`);
+                    $("#quoted").html(`A share of ${QUOTED[symbol]["longName"]} (${symbol}) costs ${formatter.format(QUOTED[symbol]["regularMarketPrice"])}.`);
                 },
                 complete: function() {
                     $("#loading-overlay").fadeOut(300);

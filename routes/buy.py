@@ -35,7 +35,7 @@ def buy():
 
     # Check if user has enough cash to buy shares
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    price = float(quoted[symbol]["currentPrice"])
+    price = float(quoted[symbol]["regularMarketPrice"])
     price_minor_units = int(price * 100)
     cost = price_minor_units * shares
     if cash < cost:
@@ -113,7 +113,7 @@ def buy_check():
 
     # Check if user has enough cash to buy shares
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    price = float(quoted[symbol]["currentPrice"])
+    price = float(quoted[symbol]["regularMarketPrice"])
     price_minor_units = int(price * 100)
     cost = price_minor_units * shares
     # Return True if user has enough cash to buy shares, otherwise return False

@@ -7,5 +7,5 @@ requests==2.31.0
 Werkzeug==3.0.1
 setuptools>=65.5.1 # not directly required, pinned to avoid a vulnerability
 wheel>=0.38.0 # not directly required, pinned to avoid a vulnerability
-yfinance==0.2.30
-numpy>=1.22.2 # not directly required, pinned by Snyk to avoid a vulnerability
+yahoofinancials==1.17
+numpy>=1.22.2 # not directly required, pinned to avoid a vulnerability

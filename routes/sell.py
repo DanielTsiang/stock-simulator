@@ -41,7 +41,7 @@ def sell():
     # User has enough shares to sell as requested
     # Calculate new cash amount user has
     cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-    price = float(quoted[symbol]["currentPrice"])
+    price = float(quoted[symbol]["regularMarketPrice"])
     price_minor_units = int(price * 100)
     cash_gained = price_minor_units * shares
     new_cash_total = cash + cash_gained
