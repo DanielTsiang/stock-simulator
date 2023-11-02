@@ -59,7 +59,7 @@ def lookup(symbols):
             # convert string of symbols with commas into list of symbols
             symbols = symbols.split(",")
 
-        tickers = YahooFinancials(tickers, concurrent=True, max_workers=8, country="US")
+        tickers = YahooFinancials(symbols, concurrent=True, max_workers=8, country="US")
     except requests.RequestException:
         return None
 
