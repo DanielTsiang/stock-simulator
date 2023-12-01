@@ -60,6 +60,7 @@ def lookup(symbols):
             symbols = ",".join(symbols)
 
         tickers = yf.Tickers(symbols).tickers
+
     except requests.RequestException:
         return None
 
@@ -73,7 +74,7 @@ def lookup(symbols):
             ticker: {key: tickers[ticker].info[key] for key in required_fields}
             for ticker in tickers
         }
-    
+
     except (KeyError, TypeError, ValueError):
         return None
 
