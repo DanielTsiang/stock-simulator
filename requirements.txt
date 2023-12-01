@@ -1,4 +1,4 @@
-cs50==9.2.5
+cs50==9.3.0
 Flask==3.0.0
 Flask-Session==0.5.0
 gunicorn==21.2.0
