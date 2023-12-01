@@ -55,7 +55,9 @@ def lookup(symbols):
 
     # Contact API
     try:
-        tickers = YahooFinancials(symbols, concurrent=True, max_workers=8, country="US").get_stock_price_data()
+        tickers = YahooFinancials(
+            symbols, concurrent=True, max_workers=8, country="US"
+        ).get_stock_price_data()
     except requests.RequestException:
         return None
 
