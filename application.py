@@ -4,6 +4,7 @@ from tempfile import mkdtemp
 from cs50 import SQL
 from flask import Flask, redirect, request
 from flask_session import Session
+from sqlalchemy.pool import NullPool
 from werkzeug.exceptions import HTTPException, InternalServerError, default_exceptions
 
 from utils import apology, datetimeformat, usd
@@ -12,7 +13,10 @@ from utils import apology, datetimeformat, usd
 uri = os.environ.get("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
-db = SQL(uri)
+if "sqlite" in uri:
+    db = SQL(uri, poolclass=NullPool)
+else:
+    db = SQL(uri)
 
 from routes.buy import buy_blueprint
 from routes.cash import cash_blueprint
