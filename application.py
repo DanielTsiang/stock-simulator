@@ -13,11 +13,7 @@ from utils import apology, datetimeformat, usd
 uri = os.environ.get("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://")
-if "sqlite" in uri:
-    db = SQL(uri, poolclass=NullPool)
-else:
-    db = SQL(uri)
-
+db = SQL(uri, poolclass=NullPool) if "sqlite" in uri else SQL(uri)
 from routes.buy import buy_blueprint
 from routes.cash import cash_blueprint
 from routes.history import history_blueprint
