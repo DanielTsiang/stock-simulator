@@ -1,5 +1,4 @@
 import logging
-import os
 import sqlite3
 import sys
 import unittest
@@ -41,11 +40,11 @@ LOOKUP_RETURN = {
 def setUp():
     # Set up test database
     base_path = Path(__file__).parent
-    test_db_path = os.path.join(base_path, "test.db")
-    if os.path.exists(test_db_path):
-        os.remove(test_db_path)
-    test_db = sqlite3.connect(test_db_path)
-    source_db = sqlite3.connect(os.path.join(base_path, "simulator.backup.db"))
+    test_db_path = base_path / "test.db"
+    if test_db_path.exists():
+        test_db_path.unlink()
+    test_db = sqlite3.connect(test_db_path.as_posix())
+    source_db = sqlite3.connect((base_path / "simulator.backup.db").as_posix())
     source_db.backup(test_db)
 
     # Set up environment variables
@@ -78,8 +77,8 @@ class ApplicationTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         base_path = Path(__file__).parent
-        cls.test_db_path = os.path.join(base_path, "test.db")
-        if not os.path.exists(cls.test_db_path):
+        cls.test_db_path = base_path / "test.db"
+        if not cls.test_db_path.exists():
             setUp()
 
         cls.login_payload = {"username": TEST1, "password": TEST1}
@@ -119,6 +118,6 @@ class ApplicationTestBase(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         super().tearDownClass()
-        if os.path.exists(cls.test_db_path):
-            os.remove(cls.test_db_path)
+        if cls.test_db_path.exists():
+            cls.test_db_path.unlink()
         env_patcher.stop()
