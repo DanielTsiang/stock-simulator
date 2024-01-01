@@ -9,4 +9,4 @@ setuptools>=65.5.1 # not directly required, pinned to avoid a vulnerability
 sqlalchemy # version not pinned as transitive dependency of cs50
 Werkzeug==3.0.1
 wheel>=0.38.0 # not directly required, pinned to avoid a vulnerability
-yfinance==0.2.32
+yfinance==0.2.33
