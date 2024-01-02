@@ -67,7 +67,7 @@ def username_check():
     lower_case_username = username.lower()
 
     # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE username = ?", lower_case_username)
+    username = db.execute("SELECT * FROM users WHERE username = ?", lower_case_username)
 
     # Return False if username already exists, otherwise return True
-    return jsonify(False) if rows else jsonify(True)
+    return jsonify(False) if username else jsonify(True)

@@ -2,7 +2,7 @@
 
 echo "======= Running unit tests ======="
 docker run --rm \
-    --entrypoint python3 \
+    --entrypoint python \
     -v $PWD/tests:/tests \
     stock-simulator:latest \
     -m unittest discover \

@@ -2,6 +2,7 @@ import sys
 import unittest
 from http import HTTPStatus
 from pathlib import Path
+from unittest import mock
 
 from werkzeug.security import check_password_hash
 
@@ -30,20 +31,53 @@ class LoginTest(ApplicationTestBase):
         self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertEqual("login.html", template.name)
 
-    def test_post_login(self):
+    def test_post_login_success(self):
         # GIVEN
         payload = {"username": TEST1, "password": TEST1}
 
         # WHEN
         with app.test_client() as test_client:
             response = test_client.post("/login", data=payload)
-        rows = db.execute("SELECT * FROM users WHERE username = ?", TEST1)
+        users = db.execute("SELECT * FROM users WHERE username = ?", TEST1)
 
         # THEN
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
         self.assertEqual("/", response.location)
-        self.assertEqual(1, len(rows))
-        self.assertTrue(check_password_hash(rows[0]["hash"], TEST1))
+        self.assertEqual(1, len(users))
+        self.assertTrue(check_password_hash(users[0]["hash"], TEST1))
+
+    @mock.patch("routes.login.flash")
+    def test_post_login_user_not_found(self, mock_flash):
+        # GIVEN
+        random_string = "random123"
+        payload = {"username": random_string, "password": random_string}
+
+        # WHEN
+        with app.test_client() as test_client:
+            response = test_client.post("/login", data=payload)
+        users = db.execute("SELECT * FROM users WHERE username = ?", random_string)
+
+        # THEN
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertEqual(0, len(users))
+        mock_flash.assert_called_once_with("Username does not exist", "danger")
+
+    @mock.patch("routes.login.flash")
+    def test_post_login_incorrect_password(self, mock_flash):
+        # GIVEN
+        random_string = "random123"
+        payload = {"username": TEST1, "password": random_string}
+
+        # WHEN
+        with app.test_client() as test_client:
+            response = test_client.post("/login", data=payload)
+        users = db.execute("SELECT * FROM users WHERE username = ?", TEST1)
+
+        # THEN
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertEqual(1, len(users))
+        self.assertTrue(check_password_hash(users[0]["hash"], TEST1))
+        mock_flash.assert_called_once_with("Incorrect password", "danger")
 
     def test_get_logout(self):
         # WHEN

@@ -50,8 +50,8 @@ class PasswordTest(ApplicationTestBase):
                 session["user_id"] = USER_ID2
             response = test_client.put("/password", data=payload)
 
-        rows = db.execute("SELECT hash FROM users WHERE id = ?", USER_ID2)
-        hashed_password = rows[0]["hash"]
+        user_hashes = db.execute("SELECT hash FROM users WHERE id = ?", USER_ID2)
+        hashed_password = user_hashes[0]["hash"]
 
         # THEN
         self.assertEqual(HTTPStatus.OK, response.status_code)

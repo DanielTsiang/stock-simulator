@@ -33,15 +33,20 @@ def login():
 
     # Query database for username
     lower_case_username = username.lower()
-    rows = db.execute("SELECT * FROM users WHERE username = ?", lower_case_username)
+    users = db.execute("SELECT * FROM users WHERE username = ?", lower_case_username)
 
-    # Ensure username exists and password is correct
-    if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
-        flash("Incorrect username and/or password", "danger")
+    # Ensure username exists
+    if not users:
+        flash("Username does not exist", "danger")
+        return render_template("login.html")
+    
+    # Ensure password is correct
+    elif not check_password_hash(users[0]["hash"], password):
+        flash("Incorrect password", "danger")
         return render_template("login.html")
 
     # Remember which user has logged in
-    session["user_id"] = rows[0]["id"]
+    session["user_id"] = users[0]["id"]
 
     # Redirect user to home page
     return redirect("/")

@@ -36,8 +36,8 @@ class RegisterTest(ApplicationTestBase):
         # WHEN
         with app.test_client() as test_client:
             response = test_client.post("/register", data=payload)
-        rows = db.execute("SELECT username FROM users WHERE username = ?", TEST2)
-        username = rows[0]["username"]
+        users = db.execute("SELECT username FROM users WHERE username = ?", TEST2)
+        username = users[0]["username"]
 
         # THEN
         self.assertEqual(HTTPStatus.FOUND, response.status_code)

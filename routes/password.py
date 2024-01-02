@@ -42,10 +42,10 @@ def password():
         return apology("passwords do not match", 400)
 
     # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+    users = db.execute("SELECT * FROM users WHERE id = ?", user_id)
 
     # Ensure old password is correct
-    if not check_password_hash(rows[0]["hash"], old_password):
+    if not check_password_hash(users[0]["hash"], old_password):
         flash("Incorrect old password", "danger")
         return render_template("password.html")
 
@@ -73,11 +73,11 @@ def password_check():
     old_password = request.form.get("old_password")
 
     # Query database for username
-    rows = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+    users = db.execute("SELECT * FROM users WHERE id = ?", user_id)
 
     # Return True if submitted old password is correct, otherwise return False
     return (
         jsonify(True)
-        if check_password_hash(rows[0]["hash"], old_password)
+        if check_password_hash(users[0]["hash"], old_password)
         else jsonify(False)
     )
