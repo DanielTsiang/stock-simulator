@@ -51,9 +51,9 @@ https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-
 ## Python
 ### Running locally with Python
 1. Export the following environment variables necessary to run the app, e.g. on MacOS/Linux:
-```
-export DATABASE_URL=<PostgreSQL database URL>
-```
+   ```
+   export DATABASE_URL=<PostgreSQL database URL>
+   ```
 2. In the root folder where `requirements.txt` is contained, run `pip install -r requirements.txt` in the terminal to install the requirements for this project.
 3. To start the app, in the root folder, run the following command in the terminal:
 `gunicorn --log-config logging.conf application:app --preload`
@@ -62,7 +62,7 @@ export DATABASE_URL=<PostgreSQL database URL>
 
 ### Testing locally with Python
 In the root folder, run the following commands in the terminal to install the requirements and then run the unit tests:
-```
+```python
 pip install -r requirements.txt -r requirements_test.txt
 python -m unittest discover -s ./tests -p "test*.py"
 ```
@@ -71,16 +71,22 @@ python -m unittest discover -s ./tests -p "test*.py"
 ### Running locally with Docker
 1. Ensure you have Docker installed.
 2. To build the Docker image, in the root folder where `application.py` is contained, run the following command in the terminal:
-`sh docker/docker-build.sh`
+   ```shell
+   sh docker/docker-build.sh
+   ```
 3. Export the following environment variables necessary to run the app, e.g. on MacOS/Linux:
-```
-export DATABASE_URL=<PostgreSQL database URL>
-```
+   ```
+   export DATABASE_URL=<PostgreSQL database URL>
+   ```
 4. To run the Docker container, in the root folder, run the following command in the terminal:
-`sh docker/docker-run.sh`
+   ```shell
+   sh docker/docker-run.sh
+   ```
 5. Visit `localhost:8000` in your web browser.
 6. To shut down the app, in the terminal hit `CTRL+C`.
 
 ### Testing locally with Docker
 After building the Docker image, run the following command to run the unit tests:
-`sh docker/docker-test.sh`
+```shell
+sh docker/docker-test.sh
+```
