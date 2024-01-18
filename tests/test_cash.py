@@ -1,32 +1,32 @@
 import sys
-import unittest
 from http import HTTPStatus
 from pathlib import Path
 
+import pytest
+
 # Append root directory to list of searched paths
-sys.path.append(str(Path(__file__).parents[1]))
+sys.path.append(Path(__file__).parents[1].as_posix())
 
-from tests.application_test_base import NEW_CASH, USER_ID2, ApplicationTestBase, app, db
+from conftest import NEW_CASH, USER_ID3
 
 
-class CashTest(ApplicationTestBase):
-    def test_put_cash(self):
-        # GIVEN
-        payload = {"cash": NEW_CASH}
+def test_put_cash(app, db):
+    # GIVEN
+    payload = {"cash": NEW_CASH}
 
-        # WHEN
-        with app.test_client() as test_client:
-            # Mock user logged in
-            with test_client.session_transaction() as session:
-                session["user_id"] = USER_ID2
-            response = test_client.put("/cash", data=payload)
-        cash = db.execute("SELECT cash FROM users WHERE id = ?", USER_ID2)[0]["cash"]
+    # WHEN
+    with app.test_client() as test_client:
+        # Mock user logged in
+        with test_client.session_transaction() as session:
+            session["user_id"] = USER_ID3
+        response = test_client.put("/cash", data=payload)
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", USER_ID3)[0]["cash"]
 
-        # THEN
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertEqual(True, response.json)
-        self.assertEqual(NEW_CASH * 100, cash)
+    # THEN
+    assert response.status_code == HTTPStatus.OK
+    assert response.json == True
+    assert cash == NEW_CASH * 100
 
 
 if __name__ == "__main__":
-    unittest.main()
+    pytest.main([__file__])

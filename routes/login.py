@@ -39,7 +39,7 @@ def login():
     if not users:
         flash("Username does not exist", "danger")
         return render_template("login.html")
-    
+
     # Ensure password is correct
     elif not check_password_hash(users[0]["hash"], password):
         flash("Incorrect password", "danger")

@@ -1,2 +1,4 @@
 # Testing requirements
 blinker~=1.7
+pytest~=7.4.4
+pytest-mock~=3.12.0
