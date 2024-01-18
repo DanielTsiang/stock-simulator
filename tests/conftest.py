@@ -1,4 +1,3 @@
-import logging
 import sqlite3
 import sys
 from contextlib import contextmanager
@@ -10,10 +9,6 @@ from flask import template_rendered
 
 # Append root directory to list of searched paths
 sys.path.append(Path(__file__).parents[1].as_posix())
-
-# Disable requests library debug logging
-logging.getLogger("requests").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 # Config
 DEFAULT_CASH = 1000000
