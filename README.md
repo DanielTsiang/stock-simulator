@@ -54,15 +54,23 @@ https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-
    ```
    export DATABASE_URL=<PostgreSQL database URL>
    ```
-2. In the root folder where `requirements.txt` is contained, run `pip install -r requirements.txt` in the terminal to install the requirements for this project.
+2. In the root folder where `requirements.txt` is contained, run the following in the terminal to install the requirements for this project:
+   ```shell
+   pip install -r requirements.txt
+   ```
 3. To start the app, in the root folder, run the following command in the terminal:
-`gunicorn --log-config logging.conf application:app --preload`
-4. Visit `localhost:8000` in your web browser.
+   ```shell
+   gunicorn --log-config logging.conf application:app --preload
+   ```
+4. Visit the following URL in your web browser:
+   ```shell
+   localhost:8000
+   ```
 5. To shut down the app, in the terminal hit `CTRL+C`.
 
 ### Testing locally with Python
 In the root folder, run the following commands in the terminal to install the requirements and then run the unit tests:
-```python
+```shell
 pip install -r requirements.txt -r requirements_test.txt
 python -m pytest tests/
 ```
@@ -82,7 +90,10 @@ python -m pytest tests/
    ```shell
    sh docker/docker-run.sh
    ```
-5. Visit `localhost:8000` in your web browser.
+5. Visit the following URL in your web browser:
+   ```shell
+   localhost:8000
+   ```
 6. To shut down the app, in the terminal hit `CTRL+C`.
 
 ### Testing locally with Docker
