@@ -64,7 +64,7 @@ https://user-images.githubusercontent.com/74436899/147715897-edcc5863-2ac8-40cb-
 In the root folder, run the following commands in the terminal to install the requirements and then run the unit tests:
 ```python
 pip install -r requirements.txt -r requirements_test.txt
-python -m unittest discover -s ./tests -p "test*.py"
+python -m pytest tests/
 ```
 
 ## Docker
