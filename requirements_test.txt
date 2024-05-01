@@ -1,4 +1,4 @@
 # Testing requirements
-blinker~=1.7
+blinker~=1.8
 pytest~=8.2.0
 pytest-mock~=3.14.0
